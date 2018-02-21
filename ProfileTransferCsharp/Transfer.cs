@@ -267,7 +267,7 @@ namespace ProfileTransferCsharp
 				{
 					Dest = profileDest + "\\..\\..\\Localdata\\" + Path.GetFileName(Source);
 				}
-			} else if (Source.Contains(@"AppData\local\Microsoft")) //set appdata folders
+			} else if (Source.Contains(@"AppData\Local\Microsoft")) //set appdata folders
 			{
 				string appFolder = Path.GetFileName(Source);
 				Dest = profileDest + @"\AppData\Local\Microsoft\" + appFolder;
@@ -275,7 +275,7 @@ namespace ProfileTransferCsharp
 			else if (Source.Contains(@"AppData\Roaming\Microsoft")) //set appdata folders
 			{
 				string appFolder = Path.GetFileName(Source);
-				Dest = profileDest + @"\AppData\Local\Microsoft\" + appFolder;
+				Dest = profileDest + @"\AppData\Roaming\Microsoft\" + appFolder;
 			}
 
 			loglist.Add("Running: robocopy \"" + Source + " \" to: \"" + Dest + " \" /E /W:0 /R:1 /LOG+:\"" + ProfileDest + "\\ProfileTransferLogs\\robocopyLog" + Path.GetFileName(Dest) + ".txt\" ");

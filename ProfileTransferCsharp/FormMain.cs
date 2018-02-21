@@ -75,7 +75,7 @@ namespace ProfileTransferCsharp
             if (Directory.Exists("C:\\Localdata")) { checkBoxLocal.Checked = true; }
 
 			////////////////////////////////////////////////////////////////////////////
-			checkBoxRegistry.Checked = true;
+			checkBoxRegistry.Checked = false;
 			////////////////////////////////////////////////////////////////////////////
 
 			int driveNumber = 0;
