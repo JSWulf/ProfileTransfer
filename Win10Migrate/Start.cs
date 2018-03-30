@@ -74,40 +74,101 @@ namespace Win10Migrate
 
         public static void MainMenu()
         {
-            var nHost = Prompt("New host [" + HostName + "]: ", HostName);
-            var oHost = Prompt("Old host: ", null);
-
-            NewHost = new Machine(nHost);
-            OldHost = new Machine(oHost);
-
-            Console.WriteLine("Type '?' to see list of users...");
-            UserName = Prompt("Username [" + UserName + "]: ", UserName);
-
-            if (UserName.Contains('?'))
-            {
-                UserName = SelectUser();
-            }
-
             
 
-            Console.WriteLine("You inputed: " + oHost);
+            
+            try
+            {
+                var nHost = Prompt("New host [" + HostName + "]: ", HostName);
+                var oHost = Prompt("Old host: ", null);
+
+                NewHost = new Machine(nHost);
+                OldHost = new Machine(oHost);
+
+                Console.WriteLine("Type '?' to see list of users...");
+                UserName = Prompt("Username [" + UserName + "]: ", UserName);
+
+                if (UserName.Contains('?'))
+                {
+                    UserName = SelectUser();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Retry? [Y/N]: ");
+
+                var retry = Console.ReadLine();
+                if (string.Equals(retry,"y", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    MainMenu();
+                    return;
+                } else
+                {
+                    Console.WriteLine("Press ENTER to exit...");
+                    Console.ReadLine();
+                    return;
+                }
+                
+            }
+                
+            
+
+
+
+            Console.WriteLine("You inputed: New Host = " + NewHost.Hostname + 
+                " Old Host = " + OldHost.Hostname + 
+                "User name = " + UserName);
 
             Console.ReadLine();
         }
 
         private static string SelectUser()
         {
-            if (Directory.Exists(""))
+            var output = new List<string>();
+            if (Directory.Exists(OldHost.Path))
             {
-
+                foreach (var folder in Directory.GetDirectories(OldHost.Path + @"Users\"))
+                {
+                    if (!folder.EndsWith("Default User", StringComparison.InvariantCultureIgnoreCase) &&
+                        !folder.EndsWith("All Users", StringComparison.InvariantCultureIgnoreCase) &&
+                        !folder.EndsWith("nimda", StringComparison.InvariantCultureIgnoreCase) &&
+                        !folder.EndsWith("Public", StringComparison.InvariantCultureIgnoreCase) &&
+                        !folder.EndsWith("oach", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        output.Add(Path.GetFileName(folder));
+                        //Console.WriteLine(Path.GetFileName(folder));
+                    }
+                }
             }
             else { throw new Exception("Could not connect to " + OldHost.Hostname); }
 
-            return "";
+            
+            for (int i = 0; i < output.Count; i++)
+            {
+                Console.WriteLine("    " + i + ": " + output[i]);
+            }
+            Console.WriteLine("Enter coresponding number for user: ");
+
+            try
+            {
+                int u = Convert.ToInt16(Console.ReadLine());
+
+                return output[u];
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Could not understand your entry. Retry:");
+                return SelectUser();
+            }
+            
+
+            
         }
 
         private static string Prompt(string Message, string Default)
         {
+            Console.Write(Message);
             var input = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(input) || string.IsNullOrEmpty(input))

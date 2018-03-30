@@ -45,6 +45,7 @@
     <Compile Include="Start.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Machine.cs" />
+    <Compile Include="CopyList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

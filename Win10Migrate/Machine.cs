@@ -14,12 +14,41 @@ namespace Win10Migrate
         }
 
         public string ProfileSource { get; set; }
-        public string Hostname { get; set; }
-        public bool IsLocal { get; set; }
+        private string hostname;
+
+        public string Hostname
+        {
+            get { return hostname; }
+            set {
+                hostname = value;
+                if (string.Equals(value, Environment.MachineName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    IsLocal = true;
+                } else { IsLocal = false; }
+            }
+        }
+
+        private bool IsLocal { get; set; }
 
         private string getUser()
         {
             return Start.UserName;
         }
+        
+        public string Path
+        {
+            get {
+                if (IsLocal)
+                {
+                    return @"C:\";
+                }
+                else
+                {
+                    return @"\\" + Hostname + @"\C$\";
+                }
+            }
+            set {  }
+        }
+
     }
 }
