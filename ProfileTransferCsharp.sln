@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileTransferCsharp", "ProfileTransferCsharp\ProfileTransferCsharp.csproj", "{3D0AF0CD-39E2-4F1D-8084-9E03E7A9EA07}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win10Migrate", "Win10Migrate\Win10Migrate.csproj", "{46FE959E-042A-4000-B5C8-7B347F1E24EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win10MigrateTests", "Win10MigrateTests\Win10MigrateTests.csproj", "{15A8432E-CCE8-49A9-BCDA-A389C908D757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{46FE959E-042A-4000-B5C8-7B347F1E24EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46FE959E-042A-4000-B5C8-7B347F1E24EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46FE959E-042A-4000-B5C8-7B347F1E24EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15A8432E-CCE8-49A9-BCDA-A389C908D757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15A8432E-CCE8-49A9-BCDA-A389C908D757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15A8432E-CCE8-49A9-BCDA-A389C908D757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15A8432E-CCE8-49A9-BCDA-A389C908D757}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
