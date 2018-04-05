@@ -9,6 +9,8 @@ namespace Win10Migrate
 {
     public class Start
     {
+        string NL = Environment.NewLine;
+
         static void Main(string[] args)
         {
             if (args.Length > 1)
@@ -111,14 +113,17 @@ namespace Win10Migrate
                 }
                 
             }
-                
-            
 
 
 
-            Console.WriteLine("You inputed: New Host = " + NewHost.Hostname + 
-                " Old Host = " + OldHost.Hostname + 
-                "User name = " + UserName);
+            var nl = Environment.NewLine;
+            var tb = "	";
+
+            Console.WriteLine("You inputed: " + nl + 
+                "    New Host" + tb + "=" + tb + NewHost.Hostname + nl +
+                "    Old Host" + tb + "=" + tb + OldHost.Hostname + nl +
+                "    User name" + tb + "=" + tb + UserName + nl +
+                "Press ENTER to exit...");
 
             Console.ReadLine();
         }
@@ -130,15 +135,16 @@ namespace Win10Migrate
             {
                 foreach (var folder in Directory.GetDirectories(OldHost.Path + @"Users\"))
                 {
-                    if (!folder.EndsWith("Default User", StringComparison.InvariantCultureIgnoreCase) &&
-                        !folder.EndsWith("All Users", StringComparison.InvariantCultureIgnoreCase) &&
-                        !folder.EndsWith("nimda", StringComparison.InvariantCultureIgnoreCase) &&
-                        !folder.EndsWith("Public", StringComparison.InvariantCultureIgnoreCase) &&
-                        !folder.EndsWith("oach", StringComparison.InvariantCultureIgnoreCase))
+                    if (!folder.ContainsIgnoreCase("Default User") &&
+                        !folder.ContainsIgnoreCase("All Users") &&
+                        !folder.ContainsIgnoreCase("nimda") &&
+                        !folder.ContainsIgnoreCase("Public") &&
+                        !folder.ContainsIgnoreCase("Coach"))
                     {
                         output.Add(Path.GetFileName(folder));
                         //Console.WriteLine(Path.GetFileName(folder));
                     }
+                    
                 }
             }
             else { throw new Exception("Could not connect to " + OldHost.Hostname); }
