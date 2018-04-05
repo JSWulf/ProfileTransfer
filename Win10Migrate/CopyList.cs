@@ -14,9 +14,10 @@ namespace Win10Migrate
         }
         CopyList(string ExtraFolder)
         {
-            CopyItems = new List<CopyItem>();
-
-            CopyItems.Add(new CopyItem(ExtraFolder));
+            CopyItems = new List<CopyItem>
+            {
+                new CopyItem(ExtraFolder)
+            };
         }
         CopyList(List<string> ExtraFolders)
         {
@@ -40,13 +41,4 @@ namespace Win10Migrate
     }
 
 
-    static class ExceptionList
-    {
-        public static List<string> Item = new List<string>()
-        {
-            "AppData",
-            "",
-            ""
-        };
-    }
 }

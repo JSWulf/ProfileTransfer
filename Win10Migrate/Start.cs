@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Win10Migrate
 {
-    class Start
+    public class Start
     {
         static void Main(string[] args)
         {
@@ -180,6 +180,25 @@ namespace Win10Migrate
                 return input.Trim();
             }
             
+        }
+
+
+        //just to test getting list
+        public static string GetProfileItems(string source)
+        {
+            var output = new StringBuilder();
+
+            foreach (var file in Directory.GetFiles(source))
+            {
+                output.Append(file + Environment.NewLine);
+            }
+
+            foreach (var folder in Directory.GetDirectories(source))
+            {
+                output.Append(folder + Environment.NewLine);
+            }
+
+            return output.ToString();
         }
     }
 }

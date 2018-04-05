@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileTransferCsharp", "Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win10Migrate", "Win10Migrate\Win10Migrate.csproj", "{46FE959E-042A-4000-B5C8-7B347F1E24EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win10MigrateTests", "Win10MigrateTests\Win10MigrateTests.csproj", "{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{46FE959E-042A-4000-B5C8-7B347F1E24EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46FE959E-042A-4000-B5C8-7B347F1E24EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46FE959E-042A-4000-B5C8-7B347F1E24EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
