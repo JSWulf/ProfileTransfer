@@ -70,5 +70,23 @@ namespace Win10Migrate
                 return false;
             }
         }
+
+        public static bool ListContains(this List<string> baseList, string checkItem)
+        {
+            foreach (var item in baseList)
+            {
+                //Console.WriteLine("Checking " + checkItem + " With " + item);
+                if (checkItem.ContainsIgnoreCase(item))
+                {
+                    //Console.WriteLine(item + " contains " + checkItem);
+                    return true;
+                }
+                //else
+                //{
+                //    Console.WriteLine("tested false...");
+                //}
+            }
+            return false;
+        }
     }
 }

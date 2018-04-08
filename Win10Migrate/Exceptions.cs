@@ -30,7 +30,7 @@ namespace Win10Migrate
             "Start Menu",
             "Templates",
             "IntelGraphicsProfiles",
-            ".cisco",
+            "cisco",
             ".dnx",
             ".oracle_jre_usage",
             ".vscode",

@@ -12,18 +12,19 @@ namespace Win10Migrate
         {
 
         }
-        public CopyItem(string Source)
+        public CopyItem(string source)
         {
-            SetSource(Source);
+            SetSource(source);
         }
 
 
         public string Source { get; private set; }
         public string Target { get; private set; }
 
-        public void SetSource(string Source)
+        public void SetSource(string source)
         {
-
+            Source = source;
+            Target = source.Replace(CopyList.OldHost.Path, CopyList.NewHost.Path);
         }
 
     }

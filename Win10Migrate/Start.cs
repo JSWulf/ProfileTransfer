@@ -148,8 +148,11 @@ namespace Win10Migrate
             var cont = Console.ReadLine();
             if (cont.ContainsIgnoreCase("y") || string.IsNullOrEmpty(cont))
             {
-                Console.WriteLine("Go!");
-                Console.ReadLine();
+                //Console.WriteLine("Go!");
+                //Console.ReadLine();
+                /////////////////////////////////////
+                var clist = new CopyList(OldHost.Path + "Localdata");
+                /////////////////////////////////////
             }
             else
             {
