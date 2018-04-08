@@ -30,7 +30,20 @@ namespace Win10Migrate
                                 break;
                             case @"/u": //set username
                             case @"/U":
+                            case @"/user":
+                            case @"/User":
+                            case @"/USER":
                                 UserName = argsplit[1];
+                                break;
+                            case @"/old": //set username
+                            case @"/Old":
+                            case @"/OLD":
+                                try { OldHost = new Machine(argsplit[1]); } catch (Exception) { }
+                                break;
+                            case @"/new": //set username
+                            case @"/New":
+                            case @"/NEW":
+                                try { NewHost = new Machine(argsplit[1]); } catch (Exception) { }
                                 break;
                             default:
                                 break;
@@ -51,7 +64,7 @@ namespace Win10Migrate
 
                 }
 
-                
+                //try { } catch (Exception) { }
             }
             else
             {
@@ -61,8 +74,13 @@ namespace Win10Migrate
             }
 
             //Console.WriteLine("we got: " + HostName + " " + UserName + " ");
-            MainMenu();
-
+            if (OldHost == null || NewHost == null || UserName == null)
+            {
+                MainMenu();
+            } else
+            {
+                GetStarted();
+            }
             //Console.ReadLine();
 
         }
@@ -76,9 +94,7 @@ namespace Win10Migrate
 
         public static void MainMenu()
         {
-            
 
-            
             try
             {
                 var nHost = Prompt("New host [" + HostName + "]: ", HostName);
@@ -114,18 +130,41 @@ namespace Win10Migrate
                 
             }
 
+            GetStarted();
+        }
 
-
+        private static void GetStarted()
+        {
             var nl = Environment.NewLine;
             var tb = "	";
 
-            Console.WriteLine("You inputed: " + nl + 
+            Console.WriteLine("You inputed: " + nl +
                 "    New Host" + tb + "=" + tb + NewHost.Hostname + nl +
                 "    Old Host" + tb + "=" + tb + OldHost.Hostname + nl +
-                "    User name" + tb + "=" + tb + UserName + nl +
-                "Press ENTER to exit...");
+                "    User name" + tb + "=" + tb + UserName + nl);
+            //"Press ENTER to exit...");
+            Console.Write("Continue? (Y/N) [Y]: ");
 
-            Console.ReadLine();
+            var cont = Console.ReadLine();
+            if (cont.ContainsIgnoreCase("y") || string.IsNullOrEmpty(cont))
+            {
+                Console.WriteLine("Go!");
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.Write("Restart? (Y/N) [N]: ");
+                var restart = Console.ReadLine();
+                if (restart.ContainsIgnoreCase("n") || string.IsNullOrEmpty(restart))
+                {
+                    Console.WriteLine("Press ENTER to exit...");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    MainMenu();
+                }
+            }
         }
 
         private static string SelectUser()

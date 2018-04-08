@@ -36,22 +36,13 @@ namespace Win10Migrate
 
         public static long GetAllFileSize(string folder)
         {
-            // 1.
-            // Get array of all file names.
-            //string[] a = Directory.GetFiles(folder, "*.*");
-
-            // 2.
-            // Calculate total bytes of all files in a loop.
+            
             long fileOutput = 0;
             foreach (string name in Directory.GetFiles(folder))
             {
-                // 3.
-                // Use FileInfo to get length of each file.
                 FileInfo info = new FileInfo(name);
                 fileOutput += info.Length;
             }
-            // 4.
-            // Return total size
             return fileOutput;
         }
     
