@@ -17,7 +17,7 @@ namespace Win10Migrate
             get { return logFile; }
             set {
                 logFile = value;
-                File.Create(logFile);
+                File.WriteAllText(logFile, "Log started at: " + TimeStamp() + Environment.NewLine);
             }
         }
 

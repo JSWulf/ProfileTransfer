@@ -17,5 +17,15 @@ namespace Win10Migrate.Tests
             //var result = Log.TimeStamp();
             Console.WriteLine(Log.TimeStamp());
         }
+
+        [TestMethod()]
+        public void LogAddTest()
+        {
+            Log.LogFile = @"C:\localdata\testlogfile.log";
+
+            Log.Add("test line");
+
+            Assert.Inconclusive();
+        }
     }
 }

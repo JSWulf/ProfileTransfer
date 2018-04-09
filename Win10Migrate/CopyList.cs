@@ -81,16 +81,17 @@ namespace Win10Migrate
 
             foreach (var item in CopyItems)
             {
-                //Console.WriteLine(item.Source);
-                //Console.WriteLine(item.Target);
-
-                item.Copy();
+                Log.Add(item.Copy());
 
                 TotalSize -= item.Size;
                 Log.Add("Total size remaining: " + TotalSize);
             }
-            Console.ReadLine();
             ///////////////////////////////////////////End Copy
+
+
+            Console.WriteLine("Migration complete at: " + Log.TimeStamp() + " Press ENTER to exit...");
+            Console.ReadLine();
+            
         }
 
         private void AddItem(string subitem)

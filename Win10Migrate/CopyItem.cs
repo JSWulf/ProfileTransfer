@@ -20,7 +20,7 @@ namespace Win10Migrate
 
 
         public string Source { get; private set; }
-        public string Target { get; private set; }
+        public string Target { get; set; }
         public long Size { get; private set; }
 
         public void SetSource(string source)
@@ -95,10 +95,22 @@ namespace Win10Migrate
             // Copy each file into the new directory.
             foreach (FileInfo fi in source.GetFiles())
             {
-                //Log.Add(@"Copying " + target.FullName + "\\" + fi.Name);
                 try
                 {
-                    fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
+                    var destFileName = Path.Combine(target.FullName, fi.Name);
+
+                    //Console.WriteLine(fi.FullName + " to " + destFileName);
+                    if (TargetFileIsNewer(fi.FullName, destFileName))
+                    {
+                        //TargetFileIsNewer -- do nothing
+                        Log.Add(destFileName + " -- newer already exists. Skipping");
+                    }
+                    else
+                    {
+                        fi.CopyTo(destFileName, true);
+                    }
+                    
+                    
                 }
                 catch (Exception ef)
                 {
@@ -124,6 +136,26 @@ namespace Win10Migrate
                 }
                 
             }
+
+        }
+
+        public static bool TargetFileIsNewer(string SourceFile, string TargetFile)
+        {
+            if (File.Exists(SourceFile) && File.Exists(TargetFile))
+            {
+                var CompareInt = DateTime.Compare(File.GetLastWriteTime(SourceFile), File.GetLastWriteTime(TargetFile));
+
+                if (CompareInt == -1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return false;
         }
     }
 }
