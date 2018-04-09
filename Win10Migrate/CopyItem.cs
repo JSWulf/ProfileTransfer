@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Win10Migrate
 {
@@ -88,51 +89,73 @@ namespace Win10Migrate
             CopyAll(diSource, diTarget);
         }
 
+        private int retryCount = 0;
+
         private void CopyAll(DirectoryInfo source, DirectoryInfo target)
         {
-            Directory.CreateDirectory(target.FullName);
-
-            // Copy each file into the new directory.
-            foreach (FileInfo fi in source.GetFiles())
+            try
             {
-                try
-                {
-                    var destFileName = Path.Combine(target.FullName, fi.Name);
+                Directory.CreateDirectory(target.FullName);
 
-                    //Console.WriteLine(fi.FullName + " to " + destFileName);
-                    if (TargetFileIsNewer(fi.FullName, destFileName))
-                    {
-                        //TargetFileIsNewer -- do nothing
-                        Log.Add(destFileName + " -- newer already exists. Skipping");
-                    }
-                    else
-                    {
-                        fi.CopyTo(destFileName, true);
-                    }
-                    
-                    
-                }
-                catch (Exception ef)
+                // Copy each file into the new directory.
+                foreach (FileInfo fi in source.GetFiles())
                 {
-                    Log.Add("Copy" + fi + "...Failed!" + Environment.NewLine +
-                    ef.Message);
+                    try
+                    {
+                        var destFileName = Path.Combine(target.FullName, fi.Name);
+
+                        //Console.WriteLine(fi.FullName + " to " + destFileName);
+                        if (TargetFileIsNewer(fi.FullName, destFileName))
+                        {
+                            //TargetFileIsNewer -- do nothing
+                            Log.Add(destFileName + " -- newer already exists. Skipping");
+                        }
+                        else
+                        {
+                            fi.CopyTo(destFileName, true);
+                        }
+                    }
+                    catch (Exception ef)
+                    {
+                        Log.Add("Copy" + fi + "...Failed!" + Environment.NewLine +
+                        ef.Message);
+                    }
+
                 }
-                
+
+                // Copy each subdirectory using recursion.
+                foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
+                {
+                    try
+                    {
+                        DirectoryInfo nextTargetSubDir =
+                        target.CreateSubdirectory(diSourceSubDir.Name);
+                        CopyAll(diSourceSubDir, nextTargetSubDir);
+                    }
+                    catch (Exception e2)
+                    {
+                        Log.Add("Copy" + diSourceSubDir + "...Failed!" + Environment.NewLine +
+                        e2.Message);
+                    }
+
+                }
+
+                retryCount = 0;
             }
-
-            // Copy each subdirectory using recursion.
-            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
+            catch (Exception ex)
             {
-                try
+                Log.Add("Connectivity lost... retrying in 1 minute...");
+                Log.Add(ex.Message);
+
+                if (retryCount < 6)
                 {
-                    DirectoryInfo nextTargetSubDir =
-                    target.CreateSubdirectory(diSourceSubDir.Name);
-                    CopyAll(diSourceSubDir, nextTargetSubDir);
-                }
-                catch (Exception e2)
+                    Thread.Sleep(60000);
+                    retryCount++;
+                    CopyAll(source, target);
+                } else
                 {
-                    Log.Add("Copy" + diSourceSubDir + "...Failed!" + Environment.NewLine +
-                    e2.Message);
+                    Log.Add("Number of retries exceeded. Fix the problem then try again.");
+                    return;
                 }
                 
             }
