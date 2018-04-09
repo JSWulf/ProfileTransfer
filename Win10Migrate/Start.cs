@@ -92,6 +92,8 @@ namespace Win10Migrate
         public static Machine OldHost { get; set; }
         public static Machine NewHost { get; set; }
 
+        public static long TotalSize { get; set; }
+
         public static void MainMenu()
         {
 

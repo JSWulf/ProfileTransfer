@@ -36,7 +36,6 @@ namespace Win10Migrate
 
         public static long GetAllFileSize(string folder)
         {
-            
             long fileOutput = 0;
             foreach (string name in Directory.GetFiles(folder))
             {
@@ -45,7 +44,14 @@ namespace Win10Migrate
             }
             return fileOutput;
         }
-    
+
+        public static long GetFileSize(string file)
+        {
+                FileInfo info = new FileInfo(file);
+            
+            return info.Length;
+        }
+
         public static bool ContainsIgnoreCase(this String baseString, string Compare)
         {
             if (baseString.IndexOf(Compare, StringComparison.InvariantCultureIgnoreCase) >= 0)
@@ -88,5 +94,8 @@ namespace Win10Migrate
             }
             return false;
         }
+
+
+        
     }
 }

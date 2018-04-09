@@ -38,47 +38,75 @@ namespace Win10Migrate
         {
             var oldUserRoot = OldHost.Path + @"Users\" + UserName;
             Log.LogFile = NewHost.Path + @"Users\" + UserName + @"\Win10Migration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
+
             //add user profile files and folders
+            //////////////////////////////////////////////////////////////user profile folders
+            Log.Add("(1) Adding User " + UserName + " folders...");
             foreach (var folder in Directory.GetDirectories(oldUserRoot))
             {
                 if (!Exceptions.ProfileFolders.ListContains(folder))
                 {
-                    CopyItems.Add(new CopyItem(folder));
+                    AddItem(folder);
                 }
+                else { Log.Add("Skipping: " + folder); }
             }
+            Log.Add("...(1) Complete.");
 
+            //////////////////////////////////////////////////////////////user profile files
+            Log.Add("(2) Adding User " + UserName + " files...");
             foreach (var file in Directory.GetFiles(oldUserRoot))
             {
                 if (!Exceptions.ProfileFiles.ListContains(file))
                 {
-                    CopyItems.Add(new CopyItem(file));
-                }
-            }
+                    AddItem(file);
 
+                } else { Log.Add("Skipping: " + file); }
+            }
+            Log.Add("...(2) Complete.");
+
+            //////////////////////////////////////////////////////////////user appdata folders
+            Log.Add("(3) Adding User " + UserName + " Profile Additions...");
             foreach (var line in ProfileAdditions.AppDataFolders)
             {
                 if (Directory.Exists(oldUserRoot + line))
                 {
-                    CopyItems.Add(new CopyItem(oldUserRoot + line));
+                    AddItem(oldUserRoot + line);
                 }
+                else { Log.Add("Skipping: " + oldUserRoot + line); }
             }
+            Log.Add("...(3) Complete.");
+
+            ///////////////////////////////////////////Copy Items
+            Log.Add("Total size of things to copy: " + TotalSize);
 
             foreach (var item in CopyItems)
             {
-                Console.WriteLine(item.Source);
-                Console.WriteLine(item.Target);
+                //Console.WriteLine(item.Source);
+                //Console.WriteLine(item.Target);
+
+                item.Copy();
+
+                TotalSize -= item.Size;
+                Log.Add("Total size remaining: " + TotalSize);
             }
             Console.ReadLine();
+            ///////////////////////////////////////////End Copy
         }
 
+        private void AddItem(string subitem)
+        {
+            var newfolder = new CopyItem(subitem);
+
+            Log.Add("Adding: " + subitem);
+
+            CopyItems.Add(newfolder);
+
+            TotalSize += newfolder.Size;
+        }
 
         public List<CopyItem> CopyItems { get; set; }
 
-
-        private void GetUserFiles()
-        {
-
-        }
+        
 
     }
 

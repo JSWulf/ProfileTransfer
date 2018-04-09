@@ -26,6 +26,7 @@ namespace Win10Migrate
         {
             var LineStamp = TimeStamp() + "   " + Line + Environment.NewLine;
             File.AppendAllText(LogFile, LineStamp);
+            Console.WriteLine(TimeStamp() + "   " + Line);
         }
 
         static public string TimeStamp()
