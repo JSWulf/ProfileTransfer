@@ -47,6 +47,8 @@
     <Compile Include="CopyItem.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="LinksToQuickAccess.cs" />
+    <Compile Include="LinkToQ.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="ProfileAdditions.cs" />
     <Compile Include="PsExec.cs" />
