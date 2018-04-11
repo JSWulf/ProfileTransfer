@@ -119,6 +119,7 @@ namespace Win10Migrate
                     {
                         Log.Add("Copy" + fi + "...Failed!" + Environment.NewLine +
                         ef.Message);
+                        throw;
                     }
 
                 }
@@ -134,7 +135,7 @@ namespace Win10Migrate
                     }
                     catch (Exception e2)
                     {
-                        Log.Add("Copy" + diSourceSubDir + "...Failed!" + Environment.NewLine +
+                        Log.Add("Copy " + diSourceSubDir + "...Failed!" + Environment.NewLine +
                         e2.Message);
                     }
 
@@ -144,18 +145,22 @@ namespace Win10Migrate
             }
             catch (Exception ex)
             {
-                Log.Add("Connectivity lost... retrying in 1 minute...");
-                Log.Add(ex.Message);
+                if (!ex.Message.ContainsIgnoreCase("denied"))
+                {
+                    Log.Add("Connectivity lost... retrying in 1 minute...");
+                    Log.Add(ex.Message);
 
-                if (retryCount < 6)
-                {
-                    Thread.Sleep(60000);
-                    retryCount++;
-                    CopyAll(source, target);
-                } else
-                {
-                    Log.Add("Number of retries exceeded. Fix the problem then try again.");
-                    return;
+                    if (retryCount < 6)
+                    {
+                        Thread.Sleep(60000);
+                        retryCount++;
+                        CopyAll(source, target);
+                    }
+                    else
+                    {
+                        Log.Add("Number of retries exceeded. Fix the problem then try again.");
+                        return;
+                    } 
                 }
                 
             }

@@ -17,6 +17,7 @@ namespace Win10Migrate
             get { return logFile; }
             set {
                 logFile = value;
+                Directory.CreateDirectory(Path.GetDirectoryName(logFile));
                 File.WriteAllText(logFile, "Log started at: " + TimeStamp() + Environment.NewLine);
             }
         }
@@ -25,7 +26,15 @@ namespace Win10Migrate
         static public void Add(string Line)
         {
             var LineStamp = TimeStamp() + "   " + Line + Environment.NewLine;
-            File.AppendAllText(LogFile, LineStamp);
+            try
+            {
+                File.AppendAllText(LogFile, LineStamp);
+            }
+            catch (Exception le)
+            {
+                Console.WriteLine("Unable to write to log file... " + le.Message);
+            }
+            
             Console.WriteLine(TimeStamp() + "   " + Line);
         }
 

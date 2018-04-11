@@ -13,6 +13,8 @@ namespace Win10Migrate
 
         static void Main(string[] args)
         {
+            bool Sent = false;
+
             if (args.Length > 1)
             {
                 
@@ -27,6 +29,9 @@ namespace Win10Migrate
                             case @"/h": //set hostname
                             case @"/H":
                                 HostName = argsplit[1];
+                                break;
+                            case @"/sent": //we've been sent
+                                Sent = true;
                                 break;
                             case @"/u": //set username
                             case @"/U":
@@ -71,6 +76,15 @@ namespace Win10Migrate
                 HostName = Environment.MachineName;
                 UserName = Environment.UserName;
 
+            }
+
+            //// skip prompts and just run.
+            if (Sent)
+            {
+                var clist = new CopyList(OldHost.Path + "Localdata");
+                clist.MainStart();
+
+                return;
             }
 
             //Console.WriteLine("we got: " + HostName + " " + UserName + " ");
@@ -144,17 +158,46 @@ namespace Win10Migrate
                 "    New Host" + tb + "=" + tb + NewHost.Hostname + nl +
                 "    Old Host" + tb + "=" + tb + OldHost.Hostname + nl +
                 "    User name" + tb + "=" + tb + UserName + nl);
-            //"Press ENTER to exit...");
             Console.Write("Continue? (Y/N) [Y]: ");
 
             var cont = Console.ReadLine();
             if (cont.ContainsIgnoreCase("y") || string.IsNullOrEmpty(cont))
             {
-                //Console.WriteLine("Go!");
-                //Console.ReadLine();
-                /////////////////////////////////////
-                var clist = new CopyList(OldHost.Path + "Localdata");
-                /////////////////////////////////////
+                
+                Console.Write("Send to run on (Type 'skip' to skip) [" + NewHost.Hostname + "]: ");
+                var Send = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(Send))
+                {
+                    try
+                    {
+                        CopyAndRun(NewHost.Hostname);
+                    }
+                    catch (Exception se)
+                    {
+                        Console.WriteLine(se.Message);
+                        GetStarted();
+                    }
+                }
+                else if (!Send.ContainsIgnoreCase("skip"))
+                {
+                    try
+                    {
+                        CopyAndRun(Send);
+                    }
+                    catch (Exception s)
+                    {
+                        Console.WriteLine(s.Message);
+                        GetStarted();
+                    }
+                }
+                else
+                {
+                    /////////////////////////////////////
+                    var clist = new CopyList(OldHost.Path + "Localdata");
+                    clist.MainStart();
+                    /////////////////////////////////////
+                }
             }
             else
             {
@@ -232,6 +275,30 @@ namespace Win10Migrate
             
         }
 
+        private static void CopyAndRun(string TargetHost)
+        {
+            var Assembly = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+            var destDrive = @"\\" + TargetHost + @"\C$\";
+            var destPath = @"ProgramData\win10migrate\";
+            var destName = "win10migrate.exe";
+            var fullDest = destDrive + destPath + destName;
+
+            if (Directory.Exists(destDrive))
+            {
+                Directory.CreateDirectory(destDrive + destPath);
+
+                //Console.WriteLine(Assembly);
+                File.Copy(Assembly, fullDest, true);
+            } else { throw new Exception("Destination does not exist"); }
+
+            //run with /old: /new: /u: /sent:true
+            PsExec.Run(TargetHost, 
+                @"C:\" + destPath + destName +
+                " /old:" + OldHost.Hostname + " /new:" + NewHost.Hostname + " /u:" + UserName + " /sent:true", 
+                true);
+            Console.WriteLine("Press ENTER to exit...");
+            Console.ReadLine();
+        }
 
         //just to test getting list
         public static string GetProfileItems(string source)

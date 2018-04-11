@@ -12,7 +12,7 @@ namespace Win10Migrate
         public CopyList()
         {
             CopyItems = new List<CopyItem>();
-            MainStart();
+            //MainStart();
         }
         public CopyList(string ExtraFolder)
         {
@@ -20,7 +20,7 @@ namespace Win10Migrate
             {
                 new CopyItem(ExtraFolder)
             };
-            MainStart();
+            //MainStart();
         }
         public CopyList(List<string> ExtraFolders)
         {
@@ -31,10 +31,10 @@ namespace Win10Migrate
                 CopyItems.Add(new CopyItem(item));
             }
 
-            MainStart();
+            //MainStart();
         }
 
-        private void MainStart()
+        public void MainStart()
         {
             var oldUserRoot = OldHost.Path + @"Users\" + UserName;
             Log.LogFile = NewHost.Path + @"Users\" + UserName + @"\Win10Migration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
@@ -83,7 +83,7 @@ namespace Win10Migrate
             {
                 Log.Add(item.Copy());
 
-                TotalSize -= item.Size;
+                TotalSize =- item.Size;
                 Log.Add("Total size remaining: " + TotalSize);
             }
             ///////////////////////////////////////////End Copy
