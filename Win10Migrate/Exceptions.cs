@@ -35,7 +35,8 @@ namespace Win10Migrate
             ".oracle_jre_usage",
             ".vscode",
             "Saved Games",
-            "ProfileTransferLogs"
+            "ProfileTransferLogs",
+            "AppData"
 
         };
 

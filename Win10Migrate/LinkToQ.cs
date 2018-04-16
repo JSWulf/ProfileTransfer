@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Win10Migrate
 {
-    class LinkToQ : LinksToQuickAccess
+    public class LinkToQ //: LinksToQuickAccess
     {
         public string Name { get; private set; }
         public string Path { get; set; }

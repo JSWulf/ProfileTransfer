@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Win10Migrate
 {
-    class LinksToQuickAccess
+    public class LinksToQuickAccess
     {
         LinksToQuickAccess()
         {
@@ -41,12 +41,20 @@ namespace Win10Migrate
         {
             if (LinkLists == null)
             {
+                LinkLists = new List<LinkToQ>();
                 //go through files
+                foreach (var shortcutFile in Directory.GetFiles(linksPath.FullName))
+                {
+
+                    LinkLists.Add(new LinkToQ());
+                }
             }
             else
             {
-
+                //do nothing... just return linklist.
             }
+
+            return LinkLists;
         }
 
     }

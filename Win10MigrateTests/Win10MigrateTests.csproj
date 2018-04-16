@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="CopyItemTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
+    <Compile Include="LinksToQuickAccessTests.cs" />
     <Compile Include="LogTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSEXECTests.cs" />
