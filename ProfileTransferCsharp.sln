@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win10Migrate", "Win10Migrat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win10MigrateTests", "Win10MigrateTests\Win10MigrateTests.csproj", "{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileMigration", "ProfileMigration\ProfileMigration.csproj", "{59E6F697-8703-4054-A5AB-7D8CC4195C93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineMigrate", "MachineMigrate\MachineMigrate.csproj", "{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCB1DCBF-E3F7-41DC-81DD-6371A33AFEC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59E6F697-8703-4054-A5AB-7D8CC4195C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59E6F697-8703-4054-A5AB-7D8CC4195C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59E6F697-8703-4054-A5AB-7D8CC4195C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59E6F697-8703-4054-A5AB-7D8CC4195C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
