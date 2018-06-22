@@ -81,7 +81,7 @@ namespace MachineMigrate
             //// skip prompts and just run.
             if (Sent)
             {
-                var clist = new CopyList(OldHost.Path + "Localdata");
+                var clist = new CopyList(OldHost.DrivePath + "Localdata");
                 clist.MainStart();
 
                 return;
@@ -194,7 +194,7 @@ namespace MachineMigrate
                 else
                 {
                     /////////////////////////////////////
-                    var clist = new CopyList(OldHost.Path + "Localdata");
+                    var clist = new CopyList(OldHost.DrivePath + "Localdata");
                     clist.MainStart();
                     /////////////////////////////////////
                 }
@@ -218,9 +218,9 @@ namespace MachineMigrate
         private static string SelectUser()
         {
             var output = new List<string>();
-            if (Directory.Exists(OldHost.Path))
+            if (Directory.Exists(OldHost.DrivePath))
             {
-                foreach (var folder in Directory.GetDirectories(OldHost.Path + @"Users\"))
+                foreach (var folder in Directory.GetDirectories(OldHost.DrivePath + @"Users\"))
                 {
                     if (!folder.ContainsIgnoreCase("Default User") &&
                         !folder.ContainsIgnoreCase("All Users") &&

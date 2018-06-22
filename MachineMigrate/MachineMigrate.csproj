@@ -77,6 +77,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -95,6 +96,24 @@
     <None Include="Resources\112_Minus_Grey.ico" />
     <None Include="Resources\112_Tick_Green.ico" />
     <None Include="Resources\Error_red.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\error_red1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\112_minus_grey1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\112_tick_green1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Error_red2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\112_Minus_Grey2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\112_Tick_Green2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

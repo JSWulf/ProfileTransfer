@@ -36,8 +36,8 @@ namespace MachineMigrate
 
         public void MainStart()
         {
-            var oldUserRoot = OldHost.Path + @"Users\" + OldHost.UserName;
-            Log.LogFile = NewHost.Path + @"Users\" + NewHost.UserName + @"\Win10Migration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
+            var oldUserRoot = OldHost.DrivePath + @"Users\" + OldHost.UserName;
+            Log.LogFile = NewHost.DrivePath + @"Users\" + NewHost.UserName + @"\Win10Migration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
 
             //add user profile files and folders
             //////////////////////////////////////////////////////////////user profile folders

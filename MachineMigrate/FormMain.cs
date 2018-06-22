@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MachineMigrate
 {
@@ -14,28 +15,33 @@ namespace MachineMigrate
     {
         public FormMain()
         {
+            OldHost = new Machine();
+            NewHost = new Machine();
+
+            
+
             InitializeComponent();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
             FormClosing += FormMain_unLoad;
-            checkBoxSourceLocal.CheckedChanged += UpdateSource;
-            checkBoxTargetLocal.CheckedChanged += UpdateTarget;
-            textBoxSourceHost.TextChanged += UpdateSource;
-            textBoxSourceHost.LostFocus += new EventHandler(CheckHost);
-            textBoxTargetHost.TextChanged += UpdateTarget;
-            comboBoxSourceDrive.TextChanged += UpdateSource;
-            comboBoxTargetDrive.TextChanged += UpdateTarget;
-            comboBoxSourceProfile.TextChanged += UpdateSource;
-            comboBoxTargetProfile.TextChanged += UpdateTarget;
+            
+            //buttonSourceBrowse.Click += Browse;
+            //buttonTargetBrowse.Click += Browse;
 
-            buttonSourceBrowse.Click += Browse;
-            buttonTargetBrowse.Click += Browse;
+            SetMachineEvents(OldHost, checkBoxSourceLocal, textBoxSourceHost,
+                comboBoxSourceDrive, comboBoxSourceProfile, textBoxSourceLocalData);
+
+            SetMachineEvents(NewHost, checkBoxTargetLocal, textBoxTargetHost,
+                comboBoxTargetDrive, comboBoxTargetProfile, textBoxTargetLocalData);
+
+            //OldHost.ConnectivityChanged += UpdatePicture;
 
             PowerHelper.ForceSystemAwake();
         }
 
+        
         private void FormMain_unLoad(object sender, EventArgs e)
         {
             PowerHelper.ResetSystemDefault();
@@ -44,15 +50,97 @@ namespace MachineMigrate
         //public static string HostName { get; set; }
 
         //public static string UserName { get; set; }
+        private void SetMachineEvents(Machine machine, CheckBox chklocal, TextBox txtHost, 
+            ComboBox cbDrive, ComboBox cbProfile, TextBox txtLocalData)
+        {
+            txtHost.LostFocus += machine.CheckHost;
+            machine.ConnectivityChanged += UpdatePicture;
+            machine.PathChanged += UpdatePath;
 
-        public static Machine OldHost { get; set; }
-        public static Machine NewHost { get; set; }
+            chklocal.CheckedChanged += new EventHandler(delegate (Object o, EventArgs ea)
+            {
+                machine.IsLocal = chklocal.Checked;
+            });
 
-        public static long TotalSize { get; set; }
+            txtHost.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
+            {
+                machine.Hostname = txtHost.Text;
+            });
+
+            cbDrive.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
+            {
+                machine.DriveLetter = cbDrive.Text;
+            });
+
+            cbProfile.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
+            {
+                machine.ProfileSource = cbProfile.Text;
+                machine.UserName = cbProfile.Text;
+            });
+
+            txtLocalData.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
+            {
+                machine.LocalData = txtLocalData.Text;
+            });
+
+        }
+
+        private void UpdatePath(object sender, EventArgs e)
+        {
+            var senderObj = (Machine)sender;
+            Label selectedLabel = null;
+
+            if (senderObj == OldHost)
+            {
+                selectedLabel = labelFullSource;
+            }
+            else if (senderObj == NewHost)
+            {
+                selectedLabel = labelFullTarget;
+            }
+
+            selectedLabel.Text = senderObj.FullPath;
+        }
+
+        private void UpdatePicture(object sender, EventArgs e)
+        {
+            var senderObj = (Machine)sender;
+            //var senderName = senderobj.Hostname;
+            PictureBox selectedPicBox = null;
+
+            if (senderObj == OldHost)
+            {
+                //update source connectivity picture
+                selectedPicBox = pictureBoxSource;
+            }
+            else if (senderObj == NewHost)
+            {
+                //update target connectivity picture
+                selectedPicBox = pictureBoxTarget;
+            }
+
+            switch (senderObj.ConnectionState)
+            {
+                case 0:
+                    selectedPicBox.Image = Properties.Resources.Minus_Grey;
+                    break;
+                case 50:
+                    selectedPicBox.Image = Properties.Resources.Error_red;
+                    break;
+                case 100:
+                    selectedPicBox.Image = Properties.Resources.Tick_Green;
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+
 
         private void Browse(object sender, EventArgs e)
         {
-            var sendObj = (TextBox)sender;
+            var sendObj = (Button)sender;
             var sendObjName = sendObj.Name;
 
             ComboBox txtUdt = null;
@@ -97,67 +185,10 @@ namespace MachineMigrate
             return startFolder;
         }
 
-        private void CheckHost(object sender, EventArgs e)
-        {
-            var Box = (TextBox)sender;
-            var BoxName = Box.Name;
+        public static long TotalSize { get; set; }
 
-
-            var BGworker = new BackgroundWorker
-            {
-                WorkerReportsProgress = true,
-                WorkerSupportsCancellation = true,
-            };
-            BGworker.DoWork += CheckHostWorker;
-            BGworker.ProgressChanged += CheckHostProgressUpdate;
-
-            BGworker.RunWorkerAsync(Box);
-
-            //return new EventHandler(CheckHost);
-        }
-
-        private void CheckHostProgressUpdate(object sender, ProgressChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CheckHostWorker(object sender, DoWorkEventArgs e)
-        {
-            //var test = e.Argument;
-            //var testname = test.Name
-            var Box = (Form)sender;
-            var BoxName = Box.Name;
-
-            MessageBox.Show(BoxName);
-        }
-
-        private void UpdateSource(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-            SourceHost = textBoxSourceHost.Text;
-            SourceDrive = comboBoxSourceDrive.Text;
-            SourceProfile = comboBoxSourceProfile.Text;
-            SourceLocaldata = textBoxSourceLocalData.Text;
-
-            if (checkBoxSourceLocal.Checked)
-            {
-                SourceHostPath = SourceDrive + @":\";
-            }
-            else
-            {
-                SourceHostPath = @"\\" + SourceHost + @"\" + SourceDrive + @"$\";
-            }
-
-
-            labelFullSource.Text = SourceHostPath + SourceProfile;
-        }
-
-        private void UpdateTarget(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        
+        public static Machine OldHost { get; set; }
+        public static Machine NewHost { get; set; }
 
         public string SourceHost { get; private set; }
         public string SourceDrive { get; private set; }

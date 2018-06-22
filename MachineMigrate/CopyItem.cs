@@ -30,7 +30,7 @@ namespace MachineMigrate
 
             try
             {
-                Target = source.Replace(FormMain.OldHost.Path, FormMain.NewHost.Path);
+                Target = source.Replace(FormMain.OldHost.DrivePath, FormMain.NewHost.DrivePath);
             }
             catch (Exception)
             {
