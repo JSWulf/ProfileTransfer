@@ -26,15 +26,29 @@ namespace MachineMigrate
             //var BoxName = Box.Name;
             Console.WriteLine("Checking host....");
 
-            var BGworker = new BackgroundWorker
-            {
-                WorkerReportsProgress = true,
-                WorkerSupportsCancellation = true,
-            };
-            BGworker.DoWork += CheckHostWorker;
-            BGworker.ProgressChanged += CheckHostProgressUpdate;
 
-            BGworker.RunWorkerAsync();
+            if (string.Equals(Hostname, Environment.MachineName, StringComparison.InvariantCultureIgnoreCase) ||
+                string.Equals(Hostname, "Localhost", StringComparison.InvariantCultureIgnoreCase) )
+            {
+                IsLocal = true;
+                ConnectionState = 100;
+            }
+            else
+            {
+                IsLocal = false;
+
+                var BGworker = new BackgroundWorker
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true,
+                };
+                BGworker.DoWork += CheckHostWorker;
+                BGworker.ProgressChanged += CheckHostProgressUpdate;
+
+                BGworker.RunWorkerAsync();
+            }
+
+            
 
             //BGworker.CancelAsync();
             //return new EventHandler(CheckHost);
@@ -63,7 +77,30 @@ namespace MachineMigrate
             thisWorker.Dispose();
         }
 
-       
+        public string[] GetUsers(string userpath)
+        {
+            var UsersList = new List<string>();
+            if (Directory.Exists(userpath))
+            {
+                foreach (var folder in Directory.GetDirectories(userpath))
+                {
+                    if (!folder.EndsWith("Default User", StringComparison.InvariantCultureIgnoreCase) &&
+                        !folder.EndsWith("All Users", StringComparison.InvariantCultureIgnoreCase) &&
+                        !folder.EndsWith("Public", StringComparison.InvariantCultureIgnoreCase) &&
+                        !folder.EndsWith("Default", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        //UsersList.Add(Path.GetFileName(folder));
+                        UsersList.Add(folder.Remove(0, folder.IndexOf(DriveLetter) + 3));
+                    }
+                }
+
+                return UsersList.ToArray();
+            }
+            return null;
+
+        }
+
+
         private string hostname;
         public string Hostname
         {
@@ -72,19 +109,30 @@ namespace MachineMigrate
             {
                 hostname = value;
                 OnPathChange();
-                //if (string.Equals(value, Environment.MachineName, StringComparison.InvariantCultureIgnoreCase))
-                //{
-                //    IsLocal = true;
-                //} else { IsLocal = false;
-                //}
             }
         }
 
         private string profilesouce;
-        public string ProfileSource { get { return profilesouce; } set { profilesouce = value; OnPathChange(); } }
+        public string ProfileSource { get { return profilesouce; } set {
+                profilesouce = value;
+                var usrchk = value.Remove(0, value.LastIndexOf('\\') + 1);
+                if (username != usrchk)
+                {
+                    username = usrchk;
+                }
+                OnPathChange();
+            } }
 
         private string username;
-        public string UserName { get { return username; } set { username = value; OnPathChange(); } }
+        public string UserName { get { return username; } set {
+                username = value;
+                var sourceCheck = profilesouce.Remove(ProfileSource.LastIndexOf('\\') + 1) + value;
+                if (profilesouce != sourceCheck)
+                {
+                    profilesouce = sourceCheck;
+                }
+                OnPathChange();
+            } }
         
         private bool islocal;
         public bool IsLocal { get { return islocal; } set { islocal = value; OnPathChange(); } }

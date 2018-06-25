@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileMigration", "Profile
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineMigrate", "MachineMigrate\MachineMigrate.csproj", "{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineMigrateTests", "MachineMigrateTests\MachineMigrateTests.csproj", "{6E19D6EB-B144-4B0B-B020-CD8A2419A22C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F9DE797-9680-46B0-86F1-2836C0CBC2E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E19D6EB-B144-4B0B-B020-CD8A2419A22C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E19D6EB-B144-4B0B-B020-CD8A2419A22C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E19D6EB-B144-4B0B-B020-CD8A2419A22C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E19D6EB-B144-4B0B-B020-CD8A2419A22C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

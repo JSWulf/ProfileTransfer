@@ -33,6 +33,7 @@
             this.labelFullSource = new System.Windows.Forms.Label();
             this.labelFullTarget = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonSourceBrowse = new System.Windows.Forms.Button();
             this.pictureBoxSource = new System.Windows.Forms.PictureBox();
             this.textBoxSourceLocalData = new System.Windows.Forms.TextBox();
             this.checkBoxLocalData = new System.Windows.Forms.CheckBox();
@@ -43,6 +44,7 @@
             this.comboBoxSourceDrive = new System.Windows.Forms.ComboBox();
             this.textBoxSourceHost = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonTargetBrowse = new System.Windows.Forms.Button();
             this.pictureBoxTarget = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxTargetLocalData = new System.Windows.Forms.TextBox();
@@ -52,8 +54,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxTargetDrive = new System.Windows.Forms.ComboBox();
             this.textBoxTargetHost = new System.Windows.Forms.TextBox();
-            this.buttonTargetBrowse = new System.Windows.Forms.Button();
-            this.buttonSourceBrowse = new System.Windows.Forms.Button();
+            this.buttonLocalSourceBrowse = new System.Windows.Forms.Button();
+            this.buttonLocalTargetBrowse = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -102,6 +104,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonLocalSourceBrowse);
             this.groupBox1.Controls.Add(this.buttonSourceBrowse);
             this.groupBox1.Controls.Add(this.pictureBoxSource);
             this.groupBox1.Controls.Add(this.textBoxSourceLocalData);
@@ -120,6 +123,16 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Source";
+            // 
+            // buttonSourceBrowse
+            // 
+            this.buttonSourceBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonSourceBrowse.Location = new System.Drawing.Point(393, 29);
+            this.buttonSourceBrowse.Name = "buttonSourceBrowse";
+            this.buttonSourceBrowse.Size = new System.Drawing.Size(64, 23);
+            this.buttonSourceBrowse.TabIndex = 16;
+            this.buttonSourceBrowse.Text = "Browse";
+            this.buttonSourceBrowse.UseVisualStyleBackColor = true;
             // 
             // pictureBoxSource
             // 
@@ -146,6 +159,7 @@
             this.checkBoxLocalData.TabIndex = 12;
             this.checkBoxLocalData.Text = "Include Localdata";
             this.checkBoxLocalData.UseVisualStyleBackColor = true;
+            this.checkBoxLocalData.CheckedChanged += new System.EventHandler(this.checkBoxLocalData_CheckedChanged);
             // 
             // comboBoxSourceProfile
             // 
@@ -199,6 +213,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonLocalTargetBrowse);
             this.groupBox2.Controls.Add(this.buttonTargetBrowse);
             this.groupBox2.Controls.Add(this.pictureBoxTarget);
             this.groupBox2.Controls.Add(this.label9);
@@ -217,6 +232,16 @@
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Target";
+            // 
+            // buttonTargetBrowse
+            // 
+            this.buttonTargetBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonTargetBrowse.Location = new System.Drawing.Point(393, 30);
+            this.buttonTargetBrowse.Name = "buttonTargetBrowse";
+            this.buttonTargetBrowse.Size = new System.Drawing.Size(64, 23);
+            this.buttonTargetBrowse.TabIndex = 17;
+            this.buttonTargetBrowse.Text = "Browse";
+            this.buttonTargetBrowse.UseVisualStyleBackColor = true;
             // 
             // pictureBoxTarget
             // 
@@ -292,26 +317,25 @@
             this.textBoxTargetHost.Size = new System.Drawing.Size(100, 20);
             this.textBoxTargetHost.TabIndex = 4;
             // 
-            // buttonTargetBrowse
+            // buttonLocalSourceBrowse
             // 
-            this.buttonTargetBrowse.Enabled = false;
-            this.buttonTargetBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonTargetBrowse.Location = new System.Drawing.Point(393, 30);
-            this.buttonTargetBrowse.Name = "buttonTargetBrowse";
-            this.buttonTargetBrowse.Size = new System.Drawing.Size(64, 23);
-            this.buttonTargetBrowse.TabIndex = 17;
-            this.buttonTargetBrowse.Text = "Browse";
-            this.buttonTargetBrowse.UseVisualStyleBackColor = true;
+            this.buttonLocalSourceBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonLocalSourceBrowse.Location = new System.Drawing.Point(393, 54);
+            this.buttonLocalSourceBrowse.Name = "buttonLocalSourceBrowse";
+            this.buttonLocalSourceBrowse.Size = new System.Drawing.Size(64, 23);
+            this.buttonLocalSourceBrowse.TabIndex = 17;
+            this.buttonLocalSourceBrowse.Text = "Browse";
+            this.buttonLocalSourceBrowse.UseVisualStyleBackColor = true;
             // 
-            // buttonSourceBrowse
+            // buttonLocalTargetBrowse
             // 
-            this.buttonSourceBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonSourceBrowse.Location = new System.Drawing.Point(393, 29);
-            this.buttonSourceBrowse.Name = "buttonSourceBrowse";
-            this.buttonSourceBrowse.Size = new System.Drawing.Size(64, 23);
-            this.buttonSourceBrowse.TabIndex = 16;
-            this.buttonSourceBrowse.Text = "Browse";
-            this.buttonSourceBrowse.UseVisualStyleBackColor = true;
+            this.buttonLocalTargetBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonLocalTargetBrowse.Location = new System.Drawing.Point(393, 55);
+            this.buttonLocalTargetBrowse.Name = "buttonLocalTargetBrowse";
+            this.buttonLocalTargetBrowse.Size = new System.Drawing.Size(64, 23);
+            this.buttonLocalTargetBrowse.TabIndex = 18;
+            this.buttonLocalTargetBrowse.Text = "Browse";
+            this.buttonLocalTargetBrowse.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -361,6 +385,8 @@
         private System.Windows.Forms.PictureBox pictureBoxTarget;
         private System.Windows.Forms.Button buttonSourceBrowse;
         private System.Windows.Forms.Button buttonTargetBrowse;
+        private System.Windows.Forms.Button buttonLocalSourceBrowse;
+        private System.Windows.Forms.Button buttonLocalTargetBrowse;
     }
 }
 

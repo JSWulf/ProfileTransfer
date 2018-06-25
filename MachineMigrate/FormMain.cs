@@ -25,170 +25,119 @@ namespace MachineMigrate
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            //set events
             FormClosing += FormMain_unLoad;
-            
-            //buttonSourceBrowse.Click += Browse;
-            //buttonTargetBrowse.Click += Browse;
 
-            SetMachineEvents(OldHost, checkBoxSourceLocal, textBoxSourceHost,
-                comboBoxSourceDrive, comboBoxSourceProfile, textBoxSourceLocalData);
+            SourceField = new MachineField("Source", OldHost, checkBoxSourceLocal, textBoxSourceHost, comboBoxSourceDrive,
+                comboBoxSourceProfile, textBoxSourceLocalData, buttonSourceBrowse, buttonLocalSourceBrowse, pictureBoxSource, labelFullSource,
+                checkBoxLocalData);
 
-            SetMachineEvents(NewHost, checkBoxTargetLocal, textBoxTargetHost,
-                comboBoxTargetDrive, comboBoxTargetProfile, textBoxTargetLocalData);
+            TargetField = new MachineField("Target", NewHost, checkBoxTargetLocal, textBoxTargetHost, comboBoxTargetDrive,
+                comboBoxTargetProfile, textBoxTargetLocalData, buttonTargetBrowse, buttonLocalTargetBrowse, pictureBoxTarget, labelFullTarget);
 
-            //OldHost.ConnectivityChanged += UpdatePicture;
+            SourceField.Profile.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
+            {
+                TargetField.Profile.Text = SourceField.Profile.Text;
+            });
+
+            SourceField.LocalData.TextChanged += LocalDataChange;
+            TargetField.IsLocal.CheckedChanged += LocalDataChange;
+
+            //set defaults
+
+            var confFile = "MachineMigrate.conf";
+
+            if (File.Exists(confFile))
+            {
+                foreach (var line in File.ReadAllLines(confFile))
+                {
+                    var sline = line.Split('=');
+
+                    switch (sline[0])
+                    {
+                        case "Source":
+                            //expecting local or hostname
+                            OldHost.Hostname = sline[1];
+                            break;
+                        case "Target":
+                            //expecting local or hostname
+                            OldHost.Hostname = sline[1];
+                            break;
+                        case "User":
+                            //expecting full drive path
+                            OldHost.ProfileSource = GenericFunctions.NoHostPath(sline[1]);
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                OldHost.IsLocal = true;
+                OldHost.Hostname = "Localhost";
+                OldHost.ProfileSource = Environment.GetEnvironmentVariable("USERPROFILE").Remove(0, 3);
+
+                NewHost.IsLocal = true;
+                NewHost.Hostname = "Localhost";
+                foreach (var item in Environment.GetLogicalDrives())
+                {
+                    try
+                    {
+                        if (Directory.Exists(item + @"Users\" + Environment.UserName))
+                        {
+                            NewHost.DriveLetter = item[0].ToString();
+                            NewHost.ProfileSource = @"Users\" + Environment.UserName;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                //NewHost.ProfileSource = Environment.GetEnvironmentVariable("USERPROFILE").Remove(0, 3);
+
+                SourceField.SetUsers();
+                TargetField.SetUsers();
+            }
+
+            textBoxSourceLocalData.Text = OldHost.DrivePath + "Localdata";
+            textBoxTargetLocalData.Text = NewHost.DrivePath + "Localdata";
+            checkBoxLocalData.Checked = true;
 
             PowerHelper.ForceSystemAwake();
         }
 
-        
+        private void LocalDataChange(object sender, EventArgs e)
+        {
+            TargetField.LocalData.Text = SourceField.LocalData.Text.Replace(OldHost.DrivePath, NewHost.DrivePath);
+        }
+
         private void FormMain_unLoad(object sender, EventArgs e)
         {
             PowerHelper.ResetSystemDefault();
         }
 
-        //public static string HostName { get; set; }
+        
 
-        //public static string UserName { get; set; }
-        private void SetMachineEvents(Machine machine, CheckBox chklocal, TextBox txtHost, 
-            ComboBox cbDrive, ComboBox cbProfile, TextBox txtLocalData)
+        private string[] GetUsers(string userpath)
         {
-            txtHost.LostFocus += machine.CheckHost;
-            machine.ConnectivityChanged += UpdatePicture;
-            machine.PathChanged += UpdatePath;
-
-            chklocal.CheckedChanged += new EventHandler(delegate (Object o, EventArgs ea)
+            if (Directory.Exists(userpath))
             {
-                machine.IsLocal = chklocal.Checked;
-            });
-
-            txtHost.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
-            {
-                machine.Hostname = txtHost.Text;
-            });
-
-            cbDrive.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
-            {
-                machine.DriveLetter = cbDrive.Text;
-            });
-
-            cbProfile.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
-            {
-                machine.ProfileSource = cbProfile.Text;
-                machine.UserName = cbProfile.Text;
-            });
-
-            txtLocalData.TextChanged += new EventHandler(delegate (Object o, EventArgs ea)
-            {
-                machine.LocalData = txtLocalData.Text;
-            });
-
+                return Directory.GetDirectories(userpath);
+            }
+            return null;
         }
 
-        private void UpdatePath(object sender, EventArgs e)
-        {
-            var senderObj = (Machine)sender;
-            Label selectedLabel = null;
-
-            if (senderObj == OldHost)
-            {
-                selectedLabel = labelFullSource;
-            }
-            else if (senderObj == NewHost)
-            {
-                selectedLabel = labelFullTarget;
-            }
-
-            selectedLabel.Text = senderObj.FullPath;
-        }
-
-        private void UpdatePicture(object sender, EventArgs e)
-        {
-            var senderObj = (Machine)sender;
-            //var senderName = senderobj.Hostname;
-            PictureBox selectedPicBox = null;
-
-            if (senderObj == OldHost)
-            {
-                //update source connectivity picture
-                selectedPicBox = pictureBoxSource;
-            }
-            else if (senderObj == NewHost)
-            {
-                //update target connectivity picture
-                selectedPicBox = pictureBoxTarget;
-            }
-
-            switch (senderObj.ConnectionState)
-            {
-                case 0:
-                    selectedPicBox.Image = Properties.Resources.Minus_Grey;
-                    break;
-                case 50:
-                    selectedPicBox.Image = Properties.Resources.Error_red;
-                    break;
-                case 100:
-                    selectedPicBox.Image = Properties.Resources.Tick_Green;
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
-
-
-        private void Browse(object sender, EventArgs e)
-        {
-            var sendObj = (Button)sender;
-            var sendObjName = sendObj.Name;
-
-            ComboBox txtUdt = null;
-            string fullSelectedPath = "";
-            string result = "";
-
-            if (sendObjName.Contains("Source"))
-            {
-                txtUdt = comboBoxSourceProfile;
-                fullSelectedPath = labelFullSource.Text;
-            }
-            else if (sendObjName.Contains("Target"))
-            {
-                txtUdt = comboBoxTargetProfile;
-                fullSelectedPath = labelFullTarget.Text;
-            }
-
-            result = GetBrowserFolder(fullSelectedPath);
-
-            if (!string.IsNullOrEmpty(result))
-            {
-                txtUdt.Text = result;
-            }
-            
-            //throw new NotImplementedException();
-        }
-
-        private string GetBrowserFolder(string startFolder)
-        {
-            FolderBrowserDialog dialog = new FolderBrowserDialog
-            {
-                ShowNewFolderButton = false,
-                SelectedPath = startFolder
-            };
-            DialogResult result = dialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                return dialog.SelectedPath;
-            }
-
-            return startFolder;
-        }
+        
 
         public static long TotalSize { get; set; }
 
         public static Machine OldHost { get; set; }
         public static Machine NewHost { get; set; }
+
+        public static MachineField SourceField { get; set; }
+        public static MachineField TargetField { get; set; }
 
         public string SourceHost { get; private set; }
         public string SourceDrive { get; private set; }
@@ -201,5 +150,11 @@ namespace MachineMigrate
         public string TargetProfile { get; private set; }
         public string TargetLocaldata { get; private set; }
         public string TargetFull { get; private set; }
+
+        private void checkBoxLocalData_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxSourceLocalData.Enabled = checkBoxLocalData.Checked;
+            textBoxTargetLocalData.Enabled = checkBoxLocalData.Checked;
+        }
     }
 }

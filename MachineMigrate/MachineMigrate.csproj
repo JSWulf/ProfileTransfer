@@ -56,10 +56,12 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenericFunctions.cs" />
     <Compile Include="LinksToQuickAccess.cs" />
     <Compile Include="LinkToQ.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Machine.cs" />
+    <Compile Include="MachineField.cs" />
     <Compile Include="PowerHelper.cs" />
     <Compile Include="ProfileAdditions.cs" />
     <Compile Include="Program.cs" />
