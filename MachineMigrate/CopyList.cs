@@ -12,7 +12,6 @@ namespace MachineMigrate
         public CopyList()
         {
             CopyItems = new List<CopyItem>();
-            //MainStart();
         }
         public CopyList(string ExtraFolder)
         {
@@ -20,7 +19,6 @@ namespace MachineMigrate
             {
                 new CopyItem(ExtraFolder)
             };
-            //MainStart();
         }
         public CopyList(List<string> ExtraFolders)
         {
@@ -30,14 +28,19 @@ namespace MachineMigrate
             {
                 CopyItems.Add(new CopyItem(item));
             }
-
-            //MainStart();
+        }
+        public CopyList(string ExtraFolder, string ExtraTarget)
+        {
+            CopyItems = new List<CopyItem>
+            {
+                new CopyItem(ExtraFolder)
+            };
         }
 
         public void MainStart()
         {
-            var oldUserRoot = OldHost.DrivePath + @"Users\" + OldHost.UserName;
-            Log.LogFile = NewHost.DrivePath + @"Users\" + NewHost.UserName + @"\Win10Migration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
+            var oldUserRoot = OldHost.DrivePath + OldHost.ProfileSource;
+            Log.LogFile = NewHost.DrivePath + NewHost.ProfileSource + @"\Win10Migration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
 
             //add user profile files and folders
             //////////////////////////////////////////////////////////////user profile folders
@@ -77,20 +80,20 @@ namespace MachineMigrate
             Log.Add("...(3) Complete.");
 
             ///////////////////////////////////////////Copy Items
-            Log.Add("Total size of things to copy: " + TotalSize);
+            //Log.Add("Total size of things to copy: " + TotalSize);
 
             foreach (var item in CopyItems)
             {
                 Log.Add(item.Copy());
 
-                TotalSize =- item.Size;
-                Log.Add("Total size remaining: " + TotalSize);
+                TotalSize -= item.Size;
+                Log.Add("Total size copied: " + TotalSize);
             }
             ///////////////////////////////////////////End Copy
 
 
-            Console.WriteLine("Migration complete at: " + Log.TimeStamp() + " Press ENTER to exit...");
-            Console.ReadLine();
+            Log.Add("Migration complete at: " + Log.TimeStamp());
+            //Console.ReadLine();
             
         }
 

@@ -18,6 +18,11 @@ namespace MachineMigrate
         {
             SetSource(source);
         }
+        public CopyItem(string source, string target)
+        {
+            Source = source;
+            Target = target;
+        }
 
 
         public string Source { get; private set; }
@@ -37,36 +42,26 @@ namespace MachineMigrate
                 Console.WriteLine("Target not set for " + Source);
             }
             
-
-            //try
-            //{
-            //    Size = Extensions.GetAllDirectorySize(Source);
-            //}
-            //catch (Exception)
-            //{
-            //    try
-            //    {
-            //        Size = Extensions.GetFileSize(Source);
-            //    }
-            //    catch (Exception)
-            //    {
-            //        Size = 1;
-            //    }
-            //}
-            
         }
 
+        //uncomment below lines for production!
         public string Copy()
         {
             try
             {
                 if (Directory.Exists(Source))
                 {
-                    CopyDirectory();
+                    //CopyDirectory();
                 }
                 else
                 {
-                    File.Copy(Source, Target);
+                    if (TargetFileIsNewer(Source, Target))
+                    {
+                        return "Target file is newer for " + Source;
+                    } else
+                    {
+                        //File.Copy(Source, Target);
+                    }
                 }
                 return "Copy " + Source + " ...Completed.";
             }
