@@ -15,16 +15,14 @@ namespace MachineMigrate
     {
         public FormMain()
         {
-            OldHost = new Machine();
-            NewHost = new Machine();
-
-            
-
             InitializeComponent();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            OldHost = new Machine();
+            NewHost = new Machine();
+
             //set events
             FormClosing += FormMain_unLoad;
 
@@ -40,9 +38,12 @@ namespace MachineMigrate
                 TargetField.Profile.Text = SourceField.Profile.Text;
             });
 
+            buttonStart.Click += new EventHandler(delegate (Object o, EventArgs ea) { Start(); });
+
             SourceField.LocalData.TextChanged += LocalDataChange;
             TargetField.IsLocal.CheckedChanged += LocalDataChange;
 
+            Log.LogUpdated += UpdateLogList;
             //set defaults
 
             var confFile = "MachineMigrate.conf";
@@ -108,6 +109,17 @@ namespace MachineMigrate
             PowerHelper.ForceSystemAwake();
         }
 
+        private void FormMain_unLoad(object sender, EventArgs e)
+        {
+            PowerHelper.ResetSystemDefault();
+        }
+
+        private void UpdateLogList(object sender, EventArgs e)
+        {
+            //add appended lines to listbox here
+            LogListBox.Items.Add(Log.LastLineAdded);
+        }
+
         private void LocalDataChange(object sender, EventArgs e)
         {
             var srcTxt = SourceField.LocalData.Text;
@@ -130,10 +142,7 @@ namespace MachineMigrate
             }
         }
 
-        private void FormMain_unLoad(object sender, EventArgs e)
-        {
-            PowerHelper.ResetSystemDefault();
-        }
+        
 
         
 
@@ -149,7 +158,11 @@ namespace MachineMigrate
 
         private void Start()
         {
+            buttonStart.Enabled = false;
+            buttonStop.Enabled = true;
+
             CopyList clist = null;
+
             if (SourceField.CkLocalData.Checked)
             {
                 if (OldHost.LocalData.Contains(@"\\") || OldHost.LocalData.Contains(@":\"))
@@ -165,7 +178,18 @@ namespace MachineMigrate
             {
                 clist = new CopyList();
             }
-            clist.MainStart();
+
+            try
+            {
+                clist.MainStart();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                buttonStart.Enabled = true;
+                buttonStop.Enabled = false;
+            }
+            
         }
 
         

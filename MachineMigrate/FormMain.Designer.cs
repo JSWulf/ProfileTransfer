@@ -33,6 +33,7 @@
             this.labelFullSource = new System.Windows.Forms.Label();
             this.labelFullTarget = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonLocalSourceBrowse = new System.Windows.Forms.Button();
             this.buttonSourceBrowse = new System.Windows.Forms.Button();
             this.pictureBoxSource = new System.Windows.Forms.PictureBox();
             this.textBoxSourceLocalData = new System.Windows.Forms.TextBox();
@@ -44,6 +45,7 @@
             this.comboBoxSourceDrive = new System.Windows.Forms.ComboBox();
             this.textBoxSourceHost = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonLocalTargetBrowse = new System.Windows.Forms.Button();
             this.buttonTargetBrowse = new System.Windows.Forms.Button();
             this.pictureBoxTarget = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -54,8 +56,15 @@
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxTargetDrive = new System.Windows.Forms.ComboBox();
             this.textBoxTargetHost = new System.Windows.Forms.TextBox();
-            this.buttonLocalSourceBrowse = new System.Windows.Forms.Button();
-            this.buttonLocalTargetBrowse = new System.Windows.Forms.Button();
+            this.LogListBox = new System.Windows.Forms.ListBox();
+            this.buttonStart = new System.Windows.Forms.Button();
+            this.buttonOpenLog = new System.Windows.Forms.Button();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.labelStartTime = new System.Windows.Forms.Label();
+            this.labelTimer = new System.Windows.Forms.Label();
+            this.listBoxItemsToGo = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -123,6 +132,16 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Source";
+            // 
+            // buttonLocalSourceBrowse
+            // 
+            this.buttonLocalSourceBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonLocalSourceBrowse.Location = new System.Drawing.Point(393, 54);
+            this.buttonLocalSourceBrowse.Name = "buttonLocalSourceBrowse";
+            this.buttonLocalSourceBrowse.Size = new System.Drawing.Size(64, 23);
+            this.buttonLocalSourceBrowse.TabIndex = 17;
+            this.buttonLocalSourceBrowse.Text = "Browse";
+            this.buttonLocalSourceBrowse.UseVisualStyleBackColor = true;
             // 
             // buttonSourceBrowse
             // 
@@ -233,6 +252,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Target";
             // 
+            // buttonLocalTargetBrowse
+            // 
+            this.buttonLocalTargetBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonLocalTargetBrowse.Location = new System.Drawing.Point(393, 55);
+            this.buttonLocalTargetBrowse.Name = "buttonLocalTargetBrowse";
+            this.buttonLocalTargetBrowse.Size = new System.Drawing.Size(64, 23);
+            this.buttonLocalTargetBrowse.TabIndex = 18;
+            this.buttonLocalTargetBrowse.Text = "Browse";
+            this.buttonLocalTargetBrowse.UseVisualStyleBackColor = true;
+            // 
             // buttonTargetBrowse
             // 
             this.buttonTargetBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -317,34 +346,130 @@
             this.textBoxTargetHost.Size = new System.Drawing.Size(100, 20);
             this.textBoxTargetHost.TabIndex = 4;
             // 
-            // buttonLocalSourceBrowse
+            // LogListBox
             // 
-            this.buttonLocalSourceBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonLocalSourceBrowse.Location = new System.Drawing.Point(393, 54);
-            this.buttonLocalSourceBrowse.Name = "buttonLocalSourceBrowse";
-            this.buttonLocalSourceBrowse.Size = new System.Drawing.Size(64, 23);
-            this.buttonLocalSourceBrowse.TabIndex = 17;
-            this.buttonLocalSourceBrowse.Text = "Browse";
-            this.buttonLocalSourceBrowse.UseVisualStyleBackColor = true;
+            this.LogListBox.BackColor = System.Drawing.Color.Black;
+            this.LogListBox.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LogListBox.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.LogListBox.FormattingEnabled = true;
+            this.LogListBox.Location = new System.Drawing.Point(12, 307);
+            this.LogListBox.Name = "LogListBox";
+            this.LogListBox.ScrollAlwaysVisible = true;
+            this.LogListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.LogListBox.Size = new System.Drawing.Size(776, 173);
+            this.LogListBox.TabIndex = 6;
+            this.LogListBox.TabStop = false;
             // 
-            // buttonLocalTargetBrowse
+            // buttonStart
             // 
-            this.buttonLocalTargetBrowse.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonLocalTargetBrowse.Location = new System.Drawing.Point(393, 55);
-            this.buttonLocalTargetBrowse.Name = "buttonLocalTargetBrowse";
-            this.buttonLocalTargetBrowse.Size = new System.Drawing.Size(64, 23);
-            this.buttonLocalTargetBrowse.TabIndex = 18;
-            this.buttonLocalTargetBrowse.Text = "Browse";
-            this.buttonLocalTargetBrowse.UseVisualStyleBackColor = true;
+            this.buttonStart.Font = new System.Drawing.Font("Lucida Calligraphy", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonStart.Location = new System.Drawing.Point(12, 252);
+            this.buttonStart.Name = "buttonStart";
+            this.buttonStart.Size = new System.Drawing.Size(130, 49);
+            this.buttonStart.TabIndex = 7;
+            this.buttonStart.Text = "Start";
+            this.buttonStart.UseVisualStyleBackColor = true;
+            // 
+            // buttonOpenLog
+            // 
+            this.buttonOpenLog.Enabled = false;
+            this.buttonOpenLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOpenLog.Location = new System.Drawing.Point(234, 252);
+            this.buttonOpenLog.Name = "buttonOpenLog";
+            this.buttonOpenLog.Size = new System.Drawing.Size(130, 49);
+            this.buttonOpenLog.TabIndex = 8;
+            this.buttonOpenLog.Text = "Open Log";
+            this.buttonOpenLog.UseVisualStyleBackColor = true;
+            // 
+            // buttonStop
+            // 
+            this.buttonStop.Enabled = false;
+            this.buttonStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonStop.Location = new System.Drawing.Point(447, 252);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(130, 49);
+            this.buttonStop.TabIndex = 9;
+            this.buttonStop.Text = "Panic Stop";
+            this.buttonStop.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(584, 252);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(86, 20);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Start Time:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(584, 281);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(109, 20);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Elapsed Time:";
+            // 
+            // labelStartTime
+            // 
+            this.labelStartTime.AutoSize = true;
+            this.labelStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStartTime.Location = new System.Drawing.Point(739, 252);
+            this.labelStartTime.Name = "labelStartTime";
+            this.labelStartTime.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.labelStartTime.Size = new System.Drawing.Size(49, 20);
+            this.labelStartTime.TabIndex = 12;
+            this.labelStartTime.Text = "00:00";
+            this.labelStartTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // labelTimer
+            // 
+            this.labelTimer.AutoSize = true;
+            this.labelTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTimer.Location = new System.Drawing.Point(739, 281);
+            this.labelTimer.Name = "labelTimer";
+            this.labelTimer.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.labelTimer.Size = new System.Drawing.Size(49, 20);
+            this.labelTimer.TabIndex = 13;
+            this.labelTimer.Text = "00:00";
+            this.labelTimer.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // listBoxItemsToGo
+            // 
+            this.listBoxItemsToGo.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxItemsToGo.FormattingEnabled = true;
+            this.listBoxItemsToGo.ItemHeight = 16;
+            this.listBoxItemsToGo.Location = new System.Drawing.Point(588, 18);
+            this.listBoxItemsToGo.Name = "listBoxItemsToGo";
+            this.listBoxItemsToGo.ScrollAlwaysVisible = true;
+            this.listBoxItemsToGo.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxItemsToGo.Size = new System.Drawing.Size(196, 228);
+            this.listBoxItemsToGo.TabIndex = 14;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.ClientSize = new System.Drawing.Size(800, 492);
+            this.Controls.Add(this.listBoxItemsToGo);
+            this.Controls.Add(this.labelTimer);
+            this.Controls.Add(this.labelStartTime);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.buttonStop);
+            this.Controls.Add(this.buttonOpenLog);
+            this.Controls.Add(this.buttonStart);
+            this.Controls.Add(this.LogListBox);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
             this.Name = "FormMain";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "User File Migration";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.groupBox1.ResumeLayout(false);
@@ -354,6 +479,7 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTarget)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -387,6 +513,15 @@
         private System.Windows.Forms.Button buttonTargetBrowse;
         private System.Windows.Forms.Button buttonLocalSourceBrowse;
         private System.Windows.Forms.Button buttonLocalTargetBrowse;
+        private System.Windows.Forms.ListBox LogListBox;
+        private System.Windows.Forms.Button buttonStart;
+        private System.Windows.Forms.Button buttonOpenLog;
+        private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelStartTime;
+        private System.Windows.Forms.Label labelTimer;
+        private System.Windows.Forms.ListBox listBoxItemsToGo;
     }
 }
 
