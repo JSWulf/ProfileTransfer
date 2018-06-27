@@ -101,8 +101,8 @@ namespace MachineMigrate
                 TargetField.SetUsers();
             }
 
-            textBoxSourceLocalData.Text = OldHost.DrivePath + "Localdata";
-            textBoxTargetLocalData.Text = NewHost.DrivePath + "Localdata";
+            textBoxSourceLocalData.Text = "Localdata";
+            textBoxTargetLocalData.Text = "Localdata";
             checkBoxLocalData.Checked = true;
 
             PowerHelper.ForceSystemAwake();
@@ -110,7 +110,24 @@ namespace MachineMigrate
 
         private void LocalDataChange(object sender, EventArgs e)
         {
-            TargetField.LocalData.Text = SourceField.LocalData.Text.Replace(OldHost.DrivePath, NewHost.DrivePath);
+            var srcTxt = SourceField.LocalData.Text;
+            if (srcTxt.Contains(@"\\") || srcTxt.Contains(@":\"))
+            {
+                var removeStart = srcTxt.Remove(0, 3);
+                int SubCheck = removeStart.IndexOf(@"\");
+                if (SubCheck <= 0)
+                {
+                    TargetField.LocalData.Text = removeStart;
+                }
+                else
+                {
+                    TargetField.LocalData.Text = removeStart.Remove(0, SubCheck);
+                }
+            }
+            else
+            {
+                TargetField.LocalData.Text = srcTxt.Replace(OldHost.DrivePath, NewHost.DrivePath);
+            }
         }
 
         private void FormMain_unLoad(object sender, EventArgs e)
@@ -127,6 +144,28 @@ namespace MachineMigrate
                 return Directory.GetDirectories(userpath);
             }
             return null;
+        }
+
+
+        private void Start()
+        {
+            CopyList clist = null;
+            if (SourceField.CkLocalData.Checked)
+            {
+                if (OldHost.LocalData.Contains(@"\\") || OldHost.LocalData.Contains(@":\"))
+                {
+                    clist = new CopyList(OldHost.LocalData);
+                }
+                else
+                {
+                    clist = new CopyList(OldHost.DrivePath + OldHost.LocalData);
+                }
+            }
+            else
+            {
+                clist = new CopyList();
+            }
+            clist.MainStart();
         }
 
         
@@ -155,6 +194,9 @@ namespace MachineMigrate
         {
             textBoxSourceLocalData.Enabled = checkBoxLocalData.Checked;
             textBoxTargetLocalData.Enabled = checkBoxLocalData.Checked;
+            buttonLocalSourceBrowse.Enabled = checkBoxLocalData.Checked;
+            buttonLocalTargetBrowse.Enabled = checkBoxLocalData.Checked;
         }
+
     }
 }

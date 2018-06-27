@@ -60,7 +60,6 @@ namespace MachineMigrate
             LocalBrowse.Click += LocalBrowseFolder;
 
             Host.LostFocus += Machine.CheckHost;
-            //IsLocal.CheckedChanged += Machine.CheckHost;
             Machine.ConnectivityChanged += UpdatePicture;
             Machine.PathChanged += UpdatePath;
 
@@ -152,7 +151,6 @@ namespace MachineMigrate
                     Machine.Hostname = "Localhost";
                 }
 
-                //txtUdt.Text = result;
                 if (Machine.IsLocal)
                 {
                     Machine.DriveLetter = result[0].ToString();
@@ -167,7 +165,6 @@ namespace MachineMigrate
 
             }
 
-            //throw new NotImplementedException();
         }
         private void LocalBrowseFolder(object sender, EventArgs e)
         {
@@ -175,13 +172,15 @@ namespace MachineMigrate
 
             if (!string.IsNullOrEmpty(result))
             {
-
-                //txtUdt.Text = result;
-                LocalData.Text = result;
-
+                if (result.Contains(Machine.DrivePath))
+                {
+                    LocalData.Text = result.Replace(Machine.DrivePath, "");
+                }
+                else
+                {
+                    LocalData.Text = result;
+                }
             }
-
-            //throw new NotImplementedException();
         }
 
         private string GetBrowserFolder(string startFolder)
@@ -211,8 +210,6 @@ namespace MachineMigrate
             catch (Exception)
             {
             }
-
-            //Profile.Items.Equals(Machine.GetUsers(Machine.DrivePath + "Users"));
         }
     }
 }
