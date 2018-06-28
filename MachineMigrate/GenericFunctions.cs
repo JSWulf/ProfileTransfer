@@ -14,9 +14,21 @@ namespace MachineMigrate
             if (input.StartsWith(@"\\"))
             {
                 output = input.Remove(0, 2);
+                return output.Remove(0, output.IndexOf(@"$\"));
+            }
+            else if (input.Contains(@":\"))
+            {
+                output = input.Remove(0, 3);
+                return output;
             }
 
-            return output.Remove(0, output.IndexOf('\\'));
+            return input;
+            
+        }
+
+        internal static string GetDriveLetterFromPath(string v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

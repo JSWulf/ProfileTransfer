@@ -48,12 +48,12 @@ namespace MachineMigrate
         //uncomment below lines for production!
         public string Copy()
         {
-            Thread.Sleep(200);
+            //Thread.Sleep(100);
             try
             {
                 if (Directory.Exists(Source))
                 {
-                    //CopyDirectory();
+                    CopyDirectory();
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace MachineMigrate
                         return "Target file is newer for " + Source;
                     } else
                     {
-                        //File.Copy(Source, Target);
+                        File.Copy(Source, Target);
                     }
                 }
                 return "Copy " + Source + " ...Completed.";

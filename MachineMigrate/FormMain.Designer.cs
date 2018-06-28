@@ -380,6 +380,7 @@
             this.buttonOpenLog.TabIndex = 8;
             this.buttonOpenLog.Text = "Open Log";
             this.buttonOpenLog.UseVisualStyleBackColor = true;
+            this.buttonOpenLog.Click += new System.EventHandler(this.buttonOpenLog_Click);
             // 
             // buttonStop
             // 
@@ -416,24 +417,24 @@
             // 
             this.labelStartTime.AutoSize = true;
             this.labelStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelStartTime.Location = new System.Drawing.Point(739, 252);
+            this.labelStartTime.Location = new System.Drawing.Point(721, 252);
             this.labelStartTime.Name = "labelStartTime";
             this.labelStartTime.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.labelStartTime.Size = new System.Drawing.Size(49, 20);
+            this.labelStartTime.Size = new System.Drawing.Size(71, 20);
             this.labelStartTime.TabIndex = 12;
-            this.labelStartTime.Text = "00:00";
+            this.labelStartTime.Text = "00:00:00";
             this.labelStartTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // labelTimer
             // 
             this.labelTimer.AutoSize = true;
             this.labelTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTimer.Location = new System.Drawing.Point(739, 281);
+            this.labelTimer.Location = new System.Drawing.Point(721, 281);
             this.labelTimer.Name = "labelTimer";
             this.labelTimer.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.labelTimer.Size = new System.Drawing.Size(49, 20);
+            this.labelTimer.Size = new System.Drawing.Size(71, 20);
             this.labelTimer.TabIndex = 13;
-            this.labelTimer.Text = "00:00";
+            this.labelTimer.Text = "00:00:00";
             this.labelTimer.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // listBoxItemsToGo

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
+using System.Threading;
 
 namespace MachineMigrate
 {
@@ -53,10 +55,13 @@ namespace MachineMigrate
             Log.LogProgressUpdated += new EventHandler(delegate (Object o, EventArgs ea) { UpdateLogList(); });
             //set defaults
 
-            var confFile = "MachineMigrate.conf";
+            var confFile = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + 
+                @"\MachineMigrate.conf";
+            //MessageBox.Show(confFile);
 
             if (File.Exists(confFile))
             {
+                //MessageBox.Show("get it");
                 foreach (var line in File.ReadAllLines(confFile))
                 {
                     var sline = line.Split('=');
@@ -69,26 +74,36 @@ namespace MachineMigrate
                             break;
                         case "Target":
                             //expecting local or hostname
-                            OldHost.Hostname = sline[1];
+                            NewHost.Hostname = sline[1];
                             break;
                         case "User":
                             //expecting full drive path
                             OldHost.ProfileSource = GenericFunctions.NoHostPath(sline[1]);
-
+                            OldHost.DriveLetter = GenericFunctions.GetDriveLetterFromPath(sline[1]);
                             break;
                         default:
                             break;
                     }
                 }
             }
-            else
+            //else
+            //{
+            if (OldHost.Hostname == null)
             {
                 OldHost.IsLocal = true;
                 OldHost.Hostname = "Localhost";
+            }
+            if (OldHost.ProfileSource == null)
+            {
                 OldHost.ProfileSource = Environment.GetEnvironmentVariable("USERPROFILE").Remove(0, 3);
-
+            }
+            if (OldHost.Hostname == null)
+            {
                 NewHost.IsLocal = true;
                 NewHost.Hostname = "Localhost";
+            }
+            if (OldHost.ProfileSource == null)
+            {
                 foreach (var item in Environment.GetLogicalDrives())
                 {
                     try
@@ -103,10 +118,14 @@ namespace MachineMigrate
                     {
                     }
                 }
-
-                SourceField.SetUsers();
-                TargetField.SetUsers();
             }
+
+                
+                
+            //}
+
+            SourceField.SetUsers();
+            TargetField.SetUsers();
 
             textBoxSourceLocalData.Text = "Localdata";
             textBoxTargetLocalData.Text = "Localdata";
@@ -170,6 +189,14 @@ namespace MachineMigrate
 
         private void Start()
         {
+            StartTime = DateTime.Now;
+            labelStartTime.Text = DateTime.Now.ToString("HH:mm:ss");
+            RunClock.DoWork += RunClock_DoWork;
+            RunClock.ProgressChanged += UpdateTime;
+            RunClock.RunWorkerCompleted += RunClock_RunWorkerCompleted;
+
+            RunClock.RunWorkerAsync();
+
             buttonStart.Enabled = false;
             buttonStop.Enabled = true;
 
@@ -200,10 +227,11 @@ namespace MachineMigrate
 
             clist.ProgressUpdated += ProgressMade;
 
+
             try
             {
                 clist.MainStart();
-
+                buttonOpenLog.Enabled = true;
                 listBoxItemsToGo.Items.Clear();
                 foreach (var item in clist.CopyItems)
                 {
@@ -220,6 +248,32 @@ namespace MachineMigrate
 
             
             
+        }
+
+        private void RunClock_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            buttonStart.Enabled = true;
+            buttonStop.Enabled = false;
+        }
+
+        private void UpdateTime(object sender, ProgressChangedEventArgs e)
+        {
+            ///DateTime a = null;
+                var a = DateTime.Now.Subtract(StartTime);
+            labelTimer.Text = a.ToString("c").Remove(8);
+        }
+
+        private void RunClock_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (RunClock.CancellationPending)
+                {
+                    break;
+                }
+                RunClock.ReportProgress(0);
+            }
         }
 
         public void Stop()
@@ -241,7 +295,13 @@ namespace MachineMigrate
             progressBar1.Value = clist.ProgressDone;
         }
 
-        
+        protected static BackgroundWorker RunClock = new BackgroundWorker() {
+            WorkerReportsProgress = true,
+            WorkerSupportsCancellation = true
+        };
+
+        public DateTime StartTime { get; private set; }
+
         public static CopyList clist { get; set; }
         public static long TotalSize { get; set; }
 
@@ -272,5 +332,14 @@ namespace MachineMigrate
             buttonLocalTargetBrowse.Enabled = checkBoxLocalData.Checked;
         }
 
+        private void buttonOpenLog_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(Log.LogFile))
+            {
+
+                Process.Start(Log.LogFile);
+            }
+            
+        }
     }
 }

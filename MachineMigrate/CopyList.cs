@@ -120,6 +120,7 @@ namespace MachineMigrate
             BGcopyRunning = false;
             //Log.LogUpdated += UpdateLogList;
             Log.Add("Migration complete at: " + Log.TimeStamp());
+            RunClock.CancelAsync();
         }
 
         private void BackgroundProgress(object sender, ProgressChangedEventArgs e)
@@ -142,13 +143,8 @@ namespace MachineMigrate
                 Log.Add(item.Copy());
 
                 double calculate = counter * 100 / CopyItems.Count;
-                //double divide = calculate * counter;
-
                 
                 thisWorker.ReportProgress(Convert.ToInt32(calculate));
-                counter++;
-                //TotalSize += item.Size;
-                //Log.Add("Total size copied: " + TotalSize);
             }
         }
 
