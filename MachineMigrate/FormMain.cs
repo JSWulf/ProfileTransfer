@@ -40,10 +40,17 @@ namespace MachineMigrate
 
             buttonStart.Click += new EventHandler(delegate (Object o, EventArgs ea) { Start(); });
 
+            buttonStop.Click += new EventHandler(delegate (Object o, EventArgs ea) { Stop(); });
+
             SourceField.LocalData.TextChanged += LocalDataChange;
             TargetField.IsLocal.CheckedChanged += LocalDataChange;
 
-            Log.LogUpdated += UpdateLogList;
+            Log.LogUpdated += new EventHandler(delegate (Object o, EventArgs ea)
+            {
+                if (!BGcopyRunning)
+                { UpdateLogList(); }
+            });
+            Log.LogProgressUpdated += new EventHandler(delegate (Object o, EventArgs ea) { UpdateLogList(); });
             //set defaults
 
             var confFile = "MachineMigrate.conf";
@@ -96,7 +103,6 @@ namespace MachineMigrate
                     {
                     }
                 }
-                //NewHost.ProfileSource = Environment.GetEnvironmentVariable("USERPROFILE").Remove(0, 3);
 
                 SourceField.SetUsers();
                 TargetField.SetUsers();
@@ -109,15 +115,21 @@ namespace MachineMigrate
             PowerHelper.ForceSystemAwake();
         }
 
+        
+
         private void FormMain_unLoad(object sender, EventArgs e)
         {
             PowerHelper.ResetSystemDefault();
         }
 
-        private void UpdateLogList(object sender, EventArgs e)
+        protected void UpdateLogList()
         {
-            //add appended lines to listbox here
-            LogListBox.Items.Add(Log.LastLineAdded);
+                LogListBox.Items.Add(Log.LastLineAdded);
+
+                if (LogListBox.Items.Count > 5)
+                {
+                    LogListBox.SelectedIndex = (LogListBox.Items.Count - 1);
+                }
         }
 
         private void LocalDataChange(object sender, EventArgs e)
@@ -161,13 +173,20 @@ namespace MachineMigrate
             buttonStart.Enabled = false;
             buttonStop.Enabled = true;
 
-            CopyList clist = null;
-
             if (SourceField.CkLocalData.Checked)
             {
                 if (OldHost.LocalData.Contains(@"\\") || OldHost.LocalData.Contains(@":\"))
                 {
-                    clist = new CopyList(OldHost.LocalData);
+                    if (string.IsNullOrEmpty(NewHost.LocalData) || 
+                        NewHost.LocalData.Contains(@"\\") || 
+                        NewHost.LocalData.Contains(@":\"))
+                    {
+                        clist = new CopyList(OldHost.LocalData, NewHost.LocalData);
+                    }
+                    else
+                    {
+                        clist = new CopyList(OldHost.LocalData);
+                    }
                 }
                 else
                 {
@@ -179,9 +198,18 @@ namespace MachineMigrate
                 clist = new CopyList();
             }
 
+            clist.ProgressUpdated += ProgressMade;
+
             try
             {
                 clist.MainStart();
+
+                listBoxItemsToGo.Items.Clear();
+                foreach (var item in clist.CopyItems)
+                {
+                    listBoxItemsToGo.Items.Add(Path.GetFileName(item.Source));
+
+                }
             }
             catch (Exception e)
             {
@@ -189,11 +217,32 @@ namespace MachineMigrate
                 buttonStart.Enabled = true;
                 buttonStop.Enabled = false;
             }
+
+            
             
         }
 
+        public void Stop()
+        {
+            if (clist != null)
+            {
+                clist.StopCopy();
+            }
+            buttonStart.Enabled = true;
+            buttonStop.Enabled = false;
+        }
         
+        public void ProgressMade(object sender, EventArgs e)
+        {
+            if (listBoxItemsToGo.Items.Count != 0)
+            {
+                listBoxItemsToGo.Items.RemoveAt(0);
+            }
+            progressBar1.Value = clist.ProgressDone;
+        }
 
+        
+        public static CopyList clist { get; set; }
         public static long TotalSize { get; set; }
 
         public static Machine OldHost { get; set; }
@@ -213,6 +262,7 @@ namespace MachineMigrate
         public string TargetProfile { get; private set; }
         public string TargetLocaldata { get; private set; }
         public string TargetFull { get; private set; }
+        public static bool BGcopyRunning { get; protected set; }
 
         private void checkBoxLocalData_CheckedChanged(object sender, EventArgs e)
         {

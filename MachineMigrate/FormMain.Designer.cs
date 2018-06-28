@@ -65,6 +65,7 @@
             this.labelStartTime = new System.Windows.Forms.Label();
             this.labelTimer = new System.Windows.Forms.Label();
             this.listBoxItemsToGo = new System.Windows.Forms.ListBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -96,7 +97,7 @@
             // labelFullSource
             // 
             this.labelFullSource.AutoSize = true;
-            this.labelFullSource.Location = new System.Drawing.Point(23, 98);
+            this.labelFullSource.Location = new System.Drawing.Point(23, 79);
             this.labelFullSource.Name = "labelFullSource";
             this.labelFullSource.Size = new System.Drawing.Size(35, 13);
             this.labelFullSource.TabIndex = 2;
@@ -105,7 +106,7 @@
             // labelFullTarget
             // 
             this.labelFullTarget.AutoSize = true;
-            this.labelFullTarget.Location = new System.Drawing.Point(23, 98);
+            this.labelFullTarget.Location = new System.Drawing.Point(23, 82);
             this.labelFullTarget.Name = "labelFullTarget";
             this.labelFullTarget.Size = new System.Drawing.Size(35, 13);
             this.labelFullTarget.TabIndex = 3;
@@ -128,7 +129,7 @@
             this.groupBox1.Controls.Add(this.labelFullSource);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(565, 114);
+            this.groupBox1.Size = new System.Drawing.Size(565, 100);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Source";
@@ -245,9 +246,9 @@
             this.groupBox2.Controls.Add(this.textBoxTargetHost);
             this.groupBox2.Controls.Add(this.checkBoxTargetLocal);
             this.groupBox2.Controls.Add(this.labelFullTarget);
-            this.groupBox2.Location = new System.Drawing.Point(12, 132);
+            this.groupBox2.Location = new System.Drawing.Point(12, 118);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(565, 114);
+            this.groupBox2.Size = new System.Drawing.Size(565, 103);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Target";
@@ -355,7 +356,6 @@
             this.LogListBox.Location = new System.Drawing.Point(12, 307);
             this.LogListBox.Name = "LogListBox";
             this.LogListBox.ScrollAlwaysVisible = true;
-            this.LogListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.LogListBox.Size = new System.Drawing.Size(776, 173);
             this.LogListBox.TabIndex = 6;
             this.LogListBox.TabStop = false;
@@ -363,9 +363,9 @@
             // buttonStart
             // 
             this.buttonStart.Font = new System.Drawing.Font("Lucida Calligraphy", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonStart.Location = new System.Drawing.Point(12, 252);
+            this.buttonStart.Location = new System.Drawing.Point(12, 227);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(130, 49);
+            this.buttonStart.Size = new System.Drawing.Size(130, 45);
             this.buttonStart.TabIndex = 7;
             this.buttonStart.Text = "Start";
             this.buttonStart.UseVisualStyleBackColor = true;
@@ -374,9 +374,9 @@
             // 
             this.buttonOpenLog.Enabled = false;
             this.buttonOpenLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOpenLog.Location = new System.Drawing.Point(234, 252);
+            this.buttonOpenLog.Location = new System.Drawing.Point(234, 228);
             this.buttonOpenLog.Name = "buttonOpenLog";
-            this.buttonOpenLog.Size = new System.Drawing.Size(130, 49);
+            this.buttonOpenLog.Size = new System.Drawing.Size(130, 44);
             this.buttonOpenLog.TabIndex = 8;
             this.buttonOpenLog.Text = "Open Log";
             this.buttonOpenLog.UseVisualStyleBackColor = true;
@@ -385,9 +385,9 @@
             // 
             this.buttonStop.Enabled = false;
             this.buttonStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonStop.Location = new System.Drawing.Point(447, 252);
+            this.buttonStop.Location = new System.Drawing.Point(447, 228);
             this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(130, 49);
+            this.buttonStop.Size = new System.Drawing.Size(130, 44);
             this.buttonStop.TabIndex = 9;
             this.buttonStop.Text = "Panic Stop";
             this.buttonStop.UseVisualStyleBackColor = true;
@@ -448,12 +448,21 @@
             this.listBoxItemsToGo.Size = new System.Drawing.Size(196, 228);
             this.listBoxItemsToGo.TabIndex = 14;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(13, 278);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(565, 23);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 15;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 492);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listBoxItemsToGo);
             this.Controls.Add(this.labelTimer);
             this.Controls.Add(this.labelStartTime);
@@ -522,6 +531,7 @@
         private System.Windows.Forms.Label labelStartTime;
         private System.Windows.Forms.Label labelTimer;
         private System.Windows.Forms.ListBox listBoxItemsToGo;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

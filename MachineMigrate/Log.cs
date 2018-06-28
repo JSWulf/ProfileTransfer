@@ -52,5 +52,12 @@ namespace MachineMigrate
         {
             LogUpdated(null, EventArgs.Empty);
         }
+
+        public static event EventHandler LogProgressUpdated;
+
+        public static void OnLogProgressUpdate()
+        {
+            LogProgressUpdated(null, EventArgs.Empty);
+        }
     }
 }

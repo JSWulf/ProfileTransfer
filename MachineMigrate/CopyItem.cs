@@ -28,6 +28,7 @@ namespace MachineMigrate
         public string Source { get; private set; }
         public string Target { get; set; }
         public long Size { get; private set; }
+        public bool Cancel { get; set; }
 
         public void SetSource(string source)
         {
@@ -47,6 +48,7 @@ namespace MachineMigrate
         //uncomment below lines for production!
         public string Copy()
         {
+            Thread.Sleep(200);
             try
             {
                 if (Directory.Exists(Source))
@@ -95,6 +97,11 @@ namespace MachineMigrate
                 // Copy each file into the new directory.
                 foreach (FileInfo fi in source.GetFiles())
                 {
+                    if (Cancel)
+                    {
+                        Log.Add("Caneled while copying " + fi.FullName);
+                        return;
+                    }
                     try
                     {
                         var destFileName = Path.Combine(target.FullName, fi.Name);

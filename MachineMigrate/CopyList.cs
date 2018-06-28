@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MachineMigrate
@@ -33,15 +35,16 @@ namespace MachineMigrate
         {
             CopyItems = new List<CopyItem>
             {
-                new CopyItem(ExtraFolder)
+                new CopyItem(ExtraFolder, ExtraTarget)
             };
         }
 
         public void MainStart()
         {
+            //Log.LogUpdated += UpdateLogList;
             Console.WriteLine(OldHost.DrivePath);
             var oldUserRoot = OldHost.DrivePath + OldHost.ProfileSource;
-            Log.LogFile = NewHost.DrivePath + NewHost.ProfileSource + @"\Win10Migration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
+            Log.LogFile = NewHost.DrivePath + NewHost.ProfileSource + @"\MachineMigration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
             Console.WriteLine("check2");
             //add user profile files and folders
             //////////////////////////////////////////////////////////////user profile folders
@@ -83,21 +86,73 @@ namespace MachineMigrate
             ///////////////////////////////////////////Copy Items
             //Log.Add("Total size of things to copy: " + TotalSize);
 
-            foreach (var item in CopyItems)
-            {
-                Log.Add(item.Copy());
+            BGcopy = new BackgroundWorker {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+                //WorkerReportsCompleted = true
+            };
 
-                TotalSize -= item.Size;
-                Log.Add("Total size copied: " + TotalSize);
-            }
+            BGcopy.RunWorkerCompleted += BackgroundComplete;
+            BGcopy.DoWork += BackgroundStart;
+            BGcopy.ProgressChanged += BackgroundProgress;
+            
+
+            //Log.LogUpdated -= UpdateLogList;
+            //Log.LogUpdated += new EventHandler(delegate (Object o, EventArgs ea) { });
+            BGcopyRunning = true;
+            BGcopy.RunWorkerAsync();
+
             ///////////////////////////////////////////End Copy
 
-
-            Log.Add("Migration complete at: " + Log.TimeStamp());
-            //Console.ReadLine();
             
         }
 
+        public void StopCopy()
+        {
+            if (BGcopyRunning)
+            {
+                BGcopy.CancelAsync();
+            }
+        }
+
+        private void BackgroundComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            BGcopyRunning = false;
+            //Log.LogUpdated += UpdateLogList;
+            Log.Add("Migration complete at: " + Log.TimeStamp());
+        }
+
+        private void BackgroundProgress(object sender, ProgressChangedEventArgs e)
+        {
+            var calIndex = (e.ProgressPercentage / CopyItems.Count) * 100;
+            //ProgressMade(e.ProgressPercentage, calIndex);
+            ProgressDone = e.ProgressPercentage;
+            Log.OnLogProgressUpdate();
+        }
+
+        public void BackgroundStart(object sender, DoWorkEventArgs args)
+        {
+            Thread.Sleep(1000);
+            var thisWorker = (sender as BackgroundWorker);
+            int counter = 1;
+            foreach (var item in CopyItems)
+            {
+                if (thisWorker.CancellationPending) { return; }
+
+                Log.Add(item.Copy());
+
+                double calculate = counter * 100 / CopyItems.Count;
+                //double divide = calculate * counter;
+
+                
+                thisWorker.ReportProgress(Convert.ToInt32(calculate));
+                counter++;
+                //TotalSize += item.Size;
+                //Log.Add("Total size copied: " + TotalSize);
+            }
+        }
+
+        private BackgroundWorker BGcopy;
         private void AddItem(string subitem)
         {
             var newfolder = new CopyItem(subitem);
@@ -110,8 +165,23 @@ namespace MachineMigrate
         }
 
         public List<CopyItem> CopyItems { get; set; }
+        private int progress;
 
-        
+        public int ProgressDone
+        {
+            get { return progress; }
+            set {
+                progress = value;
+                OnProgressUpdated();
+            }
+        }
+
+        public event EventHandler ProgressUpdated;
+
+        public void OnProgressUpdated()
+        {
+            ProgressUpdated?.Invoke(null, EventArgs.Empty);
+        }
 
     }
 
