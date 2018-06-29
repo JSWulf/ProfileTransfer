@@ -191,7 +191,7 @@ namespace MachineMigrate
 
         public event EventHandler PathChanged;
 
-        protected virtual void OnPathChange()
+        public virtual void OnPathChange()
         {
             PathChanged?.Invoke(this, EventArgs.Empty);
         }

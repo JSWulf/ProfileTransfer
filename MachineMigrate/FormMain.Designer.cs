@@ -66,6 +66,7 @@
             this.labelTimer = new System.Windows.Forms.Label();
             this.listBoxItemsToGo = new System.Windows.Forms.ListBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.labelBar = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -457,12 +458,24 @@
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 15;
             // 
+            // labelBar
+            // 
+            this.labelBar.AutoSize = true;
+            this.labelBar.BackColor = System.Drawing.Color.Transparent;
+            this.labelBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBar.Location = new System.Drawing.Point(278, 281);
+            this.labelBar.Name = "labelBar";
+            this.labelBar.Size = new System.Drawing.Size(16, 15);
+            this.labelBar.TabIndex = 16;
+            this.labelBar.Text = "...";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 492);
+            this.Controls.Add(this.labelBar);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listBoxItemsToGo);
             this.Controls.Add(this.labelTimer);
@@ -533,6 +546,7 @@
         private System.Windows.Forms.Label labelTimer;
         private System.Windows.Forms.ListBox listBoxItemsToGo;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label labelBar;
     }
 }
 

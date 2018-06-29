@@ -42,12 +42,28 @@ namespace MachineMigrate
         public void MainStart()
         {
             //Log.LogUpdated += UpdateLogList;
-            Console.WriteLine(OldHost.DrivePath);
+            //Console.WriteLine(OldHost.DrivePath);
             var oldUserRoot = OldHost.DrivePath + OldHost.ProfileSource;
             Log.LogFile = NewHost.DrivePath + NewHost.ProfileSource + @"\MachineMigration" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
-            Console.WriteLine("check2");
+            //Console.WriteLine("check2");
+            
+            Log.Add("Starting...");
+            Log.Add("Oldhost: " + OldHost.Hostname);
+            Log.Add("Local: " + OldHost.IsLocal);
+            Log.Add("Newhost: " + NewHost.Hostname);
+            Log.Add("Local: " + NewHost.IsLocal);
+            Log.Add("Oldhost Local: " + OldHost.LocalData);
+            Log.Add("Newhost Local: " + NewHost.LocalData);
+            Log.Add("Source Profile: " + OldHost.ProfileSource);
+            Log.Add("Target Profile: " + NewHost.ProfileSource);
+            Log.Add("Source Letter: " + OldHost.DriveLetter);
+            Log.Add("Target Letter: " + NewHost.DriveLetter);
+            Log.Add("Source Path: " + OldHost.DrivePath);
+            Log.Add("Target Path: " + NewHost.DrivePath);
+            Log.Add("Olduser Root: " + oldUserRoot);
             //add user profile files and folders
             //////////////////////////////////////////////////////////////user profile folders
+
             Log.Add("(1) Adding User " + OldHost.UserName + " folders...");
             foreach (var folder in Directory.GetDirectories(oldUserRoot))
             {
@@ -145,6 +161,7 @@ namespace MachineMigrate
                 double calculate = counter * 100 / CopyItems.Count;
                 
                 thisWorker.ReportProgress(Convert.ToInt32(calculate));
+                counter++;
             }
         }
 

@@ -200,6 +200,23 @@ namespace MachineMigrate
             return null;
         }
 
+        internal void Toggle(bool enabled)
+        {
+            IsLocal.Enabled = enabled;
+            Host.Enabled = enabled;
+            DriveLetter.Enabled = enabled;
+            Profile.Enabled = enabled;
+            LocalData.Enabled = enabled;
+            Browse.Enabled = enabled;
+            LocalBrowse.Enabled = enabled;
+
+            if (CkLocalData != null)
+            {
+                CkLocalData.Enabled = enabled;
+            }
+            
+        }
+
         public void SetUsers()
         {
             Profile.Items.Clear();

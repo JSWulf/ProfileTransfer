@@ -59,6 +59,33 @@ namespace MachineMigrate
                 @"\MachineMigrate.conf";
             //MessageBox.Show(confFile);
 
+            SourceField.SetUsers();
+            TargetField.SetUsers();
+
+            textBoxSourceLocalData.Text = "Localdata";
+            textBoxTargetLocalData.Text = "Localdata";
+            checkBoxLocalData.Checked = true;
+
+            OldHost.IsLocal = true;
+            OldHost.Hostname = "Localhost";
+            NewHost.ProfileSource = Environment.GetEnvironmentVariable("USERPROFILE").Remove(0, 3);
+            NewHost.IsLocal = true;
+            NewHost.Hostname = "Localhost";
+            foreach (var item in Environment.GetLogicalDrives())
+            {
+                try
+                {
+                    if (Directory.Exists(item + @"Users\" + Environment.UserName))
+                    {
+                        SourceField.DriveLetter.Text = item[0].ToString();
+                        SourceField.Profile.Text = @"Users\" + Environment.UserName;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+
             if (File.Exists(confFile))
             {
                 //MessageBox.Show("get it");
@@ -70,66 +97,35 @@ namespace MachineMigrate
                     {
                         case "Source":
                             //expecting local or hostname
-                            OldHost.Hostname = sline[1];
+                            SourceField.Host.Text = sline[1];
+                            SourceField.Machine.CheckHost(this, EventArgs.Empty);
+                            SourceField.Machine.OnPathChange();
                             break;
                         case "Target":
                             //expecting local or hostname
-                            NewHost.Hostname = sline[1];
+                            TargetField.Host.Text = sline[1];
                             break;
                         case "User":
                             //expecting full drive path
-                            OldHost.ProfileSource = GenericFunctions.NoHostPath(sline[1]);
-                            OldHost.DriveLetter = GenericFunctions.GetDriveLetterFromPath(sline[1]);
+                            SourceField.Profile.Text = GenericFunctions.NoHostPath(sline[1]);
+                            SourceField.DriveLetter.Text = GenericFunctions.GetDriveLetterFromPath(sline[1]);
                             break;
                         default:
                             break;
                     }
                 }
+
             }
             //else
             //{
-            if (OldHost.Hostname == null)
-            {
-                OldHost.IsLocal = true;
-                OldHost.Hostname = "Localhost";
-            }
-            if (OldHost.ProfileSource == null)
-            {
-                OldHost.ProfileSource = Environment.GetEnvironmentVariable("USERPROFILE").Remove(0, 3);
-            }
-            if (OldHost.Hostname == null)
-            {
-                NewHost.IsLocal = true;
-                NewHost.Hostname = "Localhost";
-            }
-            if (OldHost.ProfileSource == null)
-            {
-                foreach (var item in Environment.GetLogicalDrives())
-                {
-                    try
-                    {
-                        if (Directory.Exists(item + @"Users\" + Environment.UserName))
-                        {
-                            NewHost.DriveLetter = item[0].ToString();
-                            NewHost.ProfileSource = @"Users\" + Environment.UserName;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
+                
+            
 
                 
                 
             //}
 
-            SourceField.SetUsers();
-            TargetField.SetUsers();
-
-            textBoxSourceLocalData.Text = "Localdata";
-            textBoxTargetLocalData.Text = "Localdata";
-            checkBoxLocalData.Checked = true;
+            
 
             PowerHelper.ForceSystemAwake();
         }
@@ -195,10 +191,18 @@ namespace MachineMigrate
             RunClock.ProgressChanged += UpdateTime;
             RunClock.RunWorkerCompleted += RunClock_RunWorkerCompleted;
 
+            if (RunClock.IsBusy)
+            {
+                RunClock.CancelAsync();
+                Thread.Sleep(2000);
+            }
             RunClock.RunWorkerAsync();
 
             buttonStart.Enabled = false;
             buttonStop.Enabled = true;
+
+            SourceField.Toggle(false);
+            TargetField.Toggle(false);
 
             if (SourceField.CkLocalData.Checked)
             {
@@ -242,8 +246,7 @@ namespace MachineMigrate
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-                buttonStart.Enabled = true;
-                buttonStop.Enabled = false;
+                Stop();
             }
 
             
@@ -252,8 +255,7 @@ namespace MachineMigrate
 
         private void RunClock_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            buttonStart.Enabled = true;
-            buttonStop.Enabled = false;
+            Stop();
         }
 
         private void UpdateTime(object sender, ProgressChangedEventArgs e)
@@ -284,6 +286,14 @@ namespace MachineMigrate
             }
             buttonStart.Enabled = true;
             buttonStop.Enabled = false;
+
+            SourceField.Toggle(true);
+            TargetField.Toggle(true);
+
+            if (RunClock.IsBusy)
+            {
+                RunClock.CancelAsync();
+            }
         }
         
         public void ProgressMade(object sender, EventArgs e)
@@ -293,6 +303,7 @@ namespace MachineMigrate
                 listBoxItemsToGo.Items.RemoveAt(0);
             }
             progressBar1.Value = clist.ProgressDone;
+            labelBar.Text = clist.ProgressDone + "%";
         }
 
         protected static BackgroundWorker RunClock = new BackgroundWorker() {

@@ -28,7 +28,19 @@ namespace MachineMigrate
 
         internal static string GetDriveLetterFromPath(string v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            if (v.Contains(@":\"))
+            {
+                return v[v.IndexOf(':') - 1].ToString();
+            } else if (v.Contains(@"$\"))
+            {
+                return v[v.IndexOf('$') - 1].ToString();
+            }
+            else
+            {
+                return "C";
+            }
+
         }
     }
 }
