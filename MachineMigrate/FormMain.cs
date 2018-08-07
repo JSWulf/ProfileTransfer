@@ -108,7 +108,7 @@ namespace MachineMigrate
                         case "User":
                             //expecting full drive path
                             SourceField.Profile.Text = GenericFunctions.NoHostPath(sline[1]);
-                            SourceField.DriveLetter.Text = GenericFunctions.GetDriveLetterFromPath(sline[1]);
+                            TargetField.DriveLetter.Text = GenericFunctions.GetDriveLetterFromPath(sline[1]);
                             break;
                         default:
                             break;
