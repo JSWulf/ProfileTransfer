@@ -117,20 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Error_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Error_red2.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GetMappedDrives" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\GetMappedDrives.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Minus_Grey" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\112_Minus_Grey2.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Retrieving_mapped_drives_when_old_computer_is_not_working" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Retrieving mapped drives when old computer is not working.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Tick_Green" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\112_Tick_Green2.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

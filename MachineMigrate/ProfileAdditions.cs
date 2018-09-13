@@ -13,13 +13,16 @@ namespace MachineMigrate
 
         public static List<string> AppDataFolders = new List<string>()
         {
-            local + @"Microsoft\OneNote",
-            local + @"Microsoft\Outlook",
+            //local + @"Microsoft\OneNote",
+            //local + @"Microsoft\Outlook",
             roam + @"Microsoft\Signatures",
             roam + @"Microsoft\Templates",
             roam + @"Microsoft\Outlook",
             roam + @"Microsoft\OneNote",
-            roam + @"Microsoft\Sticky Notes"
+            roam + @"Microsoft\Sticky Notes",
+            local + @"Microsoft",
+            local + @"Google\Chrome\User Data\Default",
+            roam + @"Mozilla\Firefox"
         };
     }
 }

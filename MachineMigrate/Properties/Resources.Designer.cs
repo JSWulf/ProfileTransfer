@@ -71,12 +71,32 @@ namespace MachineMigrate.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] GetMappedDrives {
+            get {
+                object obj = ResourceManager.GetObject("GetMappedDrives", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Minus_Grey {
             get {
                 object obj = ResourceManager.GetObject("Minus_Grey", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Retrieving_mapped_drives_when_old_computer_is_not_working {
+            get {
+                object obj = ResourceManager.GetObject("Retrieving_mapped_drives_when_old_computer_is_not_working", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

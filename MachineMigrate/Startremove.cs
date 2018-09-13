@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MachineMigrate
 {
-    public class Start
+    public class Startremove
     {
         string NL = Environment.NewLine;
 

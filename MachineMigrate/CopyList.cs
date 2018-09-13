@@ -99,6 +99,8 @@ namespace MachineMigrate
             }
             Log.Add("...(3) Complete.");
 
+            Log.Add("...Starting copy process...");
+
             ///////////////////////////////////////////Copy Items
             //Log.Add("Total size of things to copy: " + TotalSize);
 

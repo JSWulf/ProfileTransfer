@@ -22,6 +22,7 @@ namespace MachineMigrate
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            StartPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
             OldHost = new Machine();
             NewHost = new Machine();
 
@@ -134,6 +135,18 @@ namespace MachineMigrate
 
         private void FormMain_unLoad(object sender, EventArgs e)
         {
+            var mappedFile = NewHost.FullPath + @"\MappedDrives.vbs";
+            if (File.Exists(mappedFile))
+            {
+                DialogResult r = MessageBox.Show("MappedDrives.vbs found -- load drives for user?", 
+                    "Mapped Drives", MessageBoxButtons.YesNo);
+
+                if (r == DialogResult.Yes)
+                {
+                    Process.Start("Cscript", mappedFile);
+                }
+
+            }
             PowerHelper.ResetSystemDefault();
         }
 
@@ -311,6 +324,8 @@ namespace MachineMigrate
             WorkerSupportsCancellation = true
         };
 
+        static public string StartPath { get; set; }
+
         public DateTime StartTime { get; private set; }
 
         public static CopyList clist { get; set; }
@@ -351,6 +366,13 @@ namespace MachineMigrate
                 Process.Start(Log.LogFile);
             }
             
+        }
+
+        private void buttonMappedDrives_Click(object sender, EventArgs e)
+        {
+            var mapform = new FormMappedDrives();
+
+            mapform.ShowDialog();
         }
     }
 }

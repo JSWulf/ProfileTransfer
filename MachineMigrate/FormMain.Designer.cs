@@ -35,7 +35,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonLocalSourceBrowse = new System.Windows.Forms.Button();
             this.buttonSourceBrowse = new System.Windows.Forms.Button();
-            this.pictureBoxSource = new System.Windows.Forms.PictureBox();
             this.textBoxSourceLocalData = new System.Windows.Forms.TextBox();
             this.checkBoxLocalData = new System.Windows.Forms.CheckBox();
             this.comboBoxSourceProfile = new System.Windows.Forms.ComboBox();
@@ -47,7 +46,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonLocalTargetBrowse = new System.Windows.Forms.Button();
             this.buttonTargetBrowse = new System.Windows.Forms.Button();
-            this.pictureBoxTarget = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxTargetLocalData = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -67,10 +65,13 @@
             this.listBoxItemsToGo = new System.Windows.Forms.ListBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.labelBar = new System.Windows.Forms.Label();
+            this.pictureBoxTarget = new System.Windows.Forms.PictureBox();
+            this.pictureBoxSource = new System.Windows.Forms.PictureBox();
+            this.buttonMappedDrives = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTarget)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).BeginInit();
             this.SuspendLayout();
             // 
             // checkBoxSourceLocal
@@ -154,14 +155,6 @@
             this.buttonSourceBrowse.TabIndex = 16;
             this.buttonSourceBrowse.Text = "Browse";
             this.buttonSourceBrowse.UseVisualStyleBackColor = true;
-            // 
-            // pictureBoxSource
-            // 
-            this.pictureBoxSource.Location = new System.Drawing.Point(463, 19);
-            this.pictureBoxSource.Name = "pictureBoxSource";
-            this.pictureBoxSource.Size = new System.Drawing.Size(70, 57);
-            this.pictureBoxSource.TabIndex = 14;
-            this.pictureBoxSource.TabStop = false;
             // 
             // textBoxSourceLocalData
             // 
@@ -273,14 +266,6 @@
             this.buttonTargetBrowse.TabIndex = 17;
             this.buttonTargetBrowse.Text = "Browse";
             this.buttonTargetBrowse.UseVisualStyleBackColor = true;
-            // 
-            // pictureBoxTarget
-            // 
-            this.pictureBoxTarget.Location = new System.Drawing.Point(463, 20);
-            this.pictureBoxTarget.Name = "pictureBoxTarget";
-            this.pictureBoxTarget.Size = new System.Drawing.Size(70, 57);
-            this.pictureBoxTarget.TabIndex = 15;
-            this.pictureBoxTarget.TabStop = false;
             // 
             // label9
             // 
@@ -443,11 +428,11 @@
             this.listBoxItemsToGo.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxItemsToGo.FormattingEnabled = true;
             this.listBoxItemsToGo.ItemHeight = 16;
-            this.listBoxItemsToGo.Location = new System.Drawing.Point(588, 18);
+            this.listBoxItemsToGo.Location = new System.Drawing.Point(588, 50);
             this.listBoxItemsToGo.Name = "listBoxItemsToGo";
             this.listBoxItemsToGo.ScrollAlwaysVisible = true;
             this.listBoxItemsToGo.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBoxItemsToGo.Size = new System.Drawing.Size(196, 228);
+            this.listBoxItemsToGo.Size = new System.Drawing.Size(196, 196);
             this.listBoxItemsToGo.TabIndex = 14;
             // 
             // progressBar1
@@ -469,12 +454,39 @@
             this.labelBar.TabIndex = 16;
             this.labelBar.Text = "...";
             // 
+            // pictureBoxTarget
+            // 
+            this.pictureBoxTarget.Location = new System.Drawing.Point(463, 20);
+            this.pictureBoxTarget.Name = "pictureBoxTarget";
+            this.pictureBoxTarget.Size = new System.Drawing.Size(70, 57);
+            this.pictureBoxTarget.TabIndex = 15;
+            this.pictureBoxTarget.TabStop = false;
+            // 
+            // pictureBoxSource
+            // 
+            this.pictureBoxSource.Location = new System.Drawing.Point(463, 19);
+            this.pictureBoxSource.Name = "pictureBoxSource";
+            this.pictureBoxSource.Size = new System.Drawing.Size(70, 57);
+            this.pictureBoxSource.TabIndex = 14;
+            this.pictureBoxSource.TabStop = false;
+            // 
+            // buttonMappedDrives
+            // 
+            this.buttonMappedDrives.Location = new System.Drawing.Point(588, 12);
+            this.buttonMappedDrives.Name = "buttonMappedDrives";
+            this.buttonMappedDrives.Size = new System.Drawing.Size(196, 32);
+            this.buttonMappedDrives.TabIndex = 17;
+            this.buttonMappedDrives.Text = "Get Mapped Drives";
+            this.buttonMappedDrives.UseVisualStyleBackColor = true;
+            this.buttonMappedDrives.Click += new System.EventHandler(this.buttonMappedDrives_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 492);
+            this.Controls.Add(this.buttonMappedDrives);
             this.Controls.Add(this.labelBar);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listBoxItemsToGo);
@@ -497,10 +509,10 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTarget)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -547,6 +559,7 @@
         private System.Windows.Forms.ListBox listBoxItemsToGo;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label labelBar;
+        private System.Windows.Forms.Button buttonMappedDrives;
     }
 }
 
